@@ -18,6 +18,8 @@ file_path = "../feedback.csv"
 
 # Load CSV
 df = pd.read_csv(file_path)
+print("Columns in the CSV:", df.columns.tolist())
+exit()
 
 # Check column names for consistency
 print("Columns in the dataset:", df.columns)
