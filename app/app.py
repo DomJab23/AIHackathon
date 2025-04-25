@@ -1,8 +1,8 @@
+import os
+import csv
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, session
 import uuid
-import csv
-import os
-from datetime import datetime
 import locale
 import requests
 
@@ -63,13 +63,22 @@ def submit_feedback():
         "country": user_country,   # Add the user's country based on IP
     }
 
-    # Save feedback data to a CSV file
+    # Define the header names
+    fieldnames = ["user_id", "session_id", "rating", "category", "comment", "related_query", "timestamp", "locale", "country"]
+
+    # Check if the file exists and is empty (first time writing)
     file_exists = os.path.isfile("feedback.csv")
+    is_empty = os.stat("feedback.csv").st_size == 0 if file_exists else True
+
+    # Open the CSV file to write data
     with open("feedback.csv", mode="a", newline="") as csvfile:
-        fieldnames = data.keys()
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if not file_exists:
+        
+        # Write the header only if the file is empty or new
+        if is_empty:
             writer.writeheader()
+        
+        # Write the data row
         writer.writerow(data)
 
     return redirect("/")
