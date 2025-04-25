@@ -1,129 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 50%;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-        .submit-btn:hover {
-            background-color: #45a049;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Danfoss Chatbot Feedback</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .chatbot-container {
+      background-color: #fff;
+      width: 100%;
+      max-width: 520px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 140px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .chat-bubble {
+      background-color: #f7f7f7;
+      padding: 16px 20px;
+      border-radius: 20px;
+      color: #333;
+      max-width: 90%;
+      align-self: flex-start;
+    }
+
+    .form-group {
+      background-color: #f7f7f7;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+
+    input[type="radio"] + label {
+      margin-right: 20px;
+      font-weight: normal;
+    }
+
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .submit-btn {
+      background-color: #d5001c;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+
+    .submit-btn:hover {
+      background-color: #b00017;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>User Feedback Form</h2>
-        <form action="/submit-feedback" method="POST">
-
-            <input type="hidden" name="user_id" value="{{ user_id }}">
-            <input type="hidden" name="session_id" value="{{ session_id }}">
-            
-
-            <!-- Rating selection -->
-            <div class="form-group">
-                <label for="rating">Rating:</label>
-                <input type="radio" id="positive" name="rating" value="positive" required onclick="showCategories('positive')">
-                <label for="positive">Positive</label>
-                <input type="radio" id="negative" name="rating" value="negative" onclick="showCategories('negative')">
-                <label for="negative">Negative</label>
-            </div>
-
-            <!-- Positive categories -->
-            <div class="form-group" id="positiveCategories" style="display: none;">
-                <label for="category">Category (Positive Feedback):</label>
-                <select id="category" name="category">
-                    <option value="">Select Category</option>
-                    <option value="Helpful">Helpful</option>
-                    <option value="Excellent Service">Excellent Service</option>
-                    <option value="Thank You">Thank You</option>
-                </select>
-            </div>
-
-            <!-- Negative categories -->
-            <div class="form-group" id="negativeCategories" style="display: none;">
-                <label for="category">Category (Negative Feedback):</label>
-                <select id="category" name="category">
-                    <option value="">Select Category</option>
-                    <option value="Poor Phrasing">Poor Phrasing</option>
-                    <option value="Off-topic">Off-topic</option>
-                    <option value="Not Specific Enough">Not Specific Enough</option>
-                    <option value="Incorrect Answer">Incorrect Answer</option>
-                    <option value="Missing Knowledge">Missing Knowledge</option>
-                    <option value="Too Technical">Too Technical</option>
-                </select>
-            </div>
-
-            <!-- Comment -->
-            <div class="form-group">
-                <label for="comment">Your Comment:</label>
-                <textarea id="comment" name="comment" placeholder="Enter your feedback here..." required></textarea>
-            </div>
-
-            <!-- Related query / response -->
-            <div class="form-group">
-                <label for="related_query">Related Query / AI Response:</label>
-                <textarea id="related_query" name="related_query" placeholder="What was your original query or the AI's response? (optional)"></textarea>
-            </div>
-
-            <!-- Submit -->
-            <div class="form-group">
-                <button type="submit" class="submit-btn">Submit Feedback</button>
-            </div>
-        </form>
+  <div class="chatbot-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Danfoss_company_logo.svg" alt="Danfoss Logo" class="logo" />
+    
+    <div class="chat-bubble">
+      How can we improve your experience with our chatbot?
     </div>
 
-    <script>
-        function showCategories(rating) {
-            document.getElementById("positiveCategories").style.display = "none";
-            document.getElementById("negativeCategories").style.display = "none";
+    <form action="/submit-feedback" method="POST">
+      <input type="hidden" name="user_id" value="{{ user_id }}" />
+      <input type="hidden" name="session_id" value="{{ session_id }}" />
 
-            if (rating === "positive") {
-                document.getElementById("positiveCategories").style.display = "block";
-            } else if (rating === "negative") {
-                document.getElementById("negativeCategories").style.display = "block";
-            }
-        }
-    </script>
+      <div class="form-group">
+        <label for="rating">How would you rate this response?</label>
+        <input type="radio" id="positive" name="rating" value="positive" required onclick="showCategories('positive')" />
+        <label for="positive">Positive</label>
+        <input type="radio" id="negative" name="rating" value="negative" onclick="showCategories('negative')" />
+        <label for="negative">Negative</label>
+      </div>
+
+      <div class="form-group" id="positiveCategories" style="display: none;">
+        <label for="category">Category (Positive):</label>
+        <select id="category" name="category">
+          <option value="">Select Category</option>
+          <option value="Helpful">Helpful</option>
+          <option value="Excellent Service">Excellent Service</option>
+          <option value="Thank You">Thank You</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="negativeCategories" style="display: none;">
+        <label for="category">Category (Negative):</label>
+        <select id="category" name="category">
+          <option value="">Select Category</option>
+          <option value="Poor Phrasing">Poor Phrasing</option>
+          <option value="Off-topic">Off-topic</option>
+          <option value="Not Specific Enough">Not Specific Enough</option>
+          <option value="Incorrect Answer">Incorrect Answer</option>
+          <option value="Missing Knowledge">Missing Knowledge</option>
+          <option value="Too Technical">Too Technical</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Your Comment:</label>
+        <textarea id="comment" name="comment" placeholder="Tell us more..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="related_query">Related Query / AI Response:</label>
+        <textarea id="related_query" name="related_query" placeholder="Paste your query or the AI response (optional)"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Send</button>
+    </form>
+  </div>
+
+  <script>
+    function showCategories(rating) {
+      document.getElementById("positiveCategories").style.display = "none";
+      document.getElementById("negativeCategories").style.display = "none";
+      if (rating === "positive") {
+        document.getElementById("positiveCategories").style.display = "block";
+      } else if (rating === "negative") {
+        document.getElementById("negativeCategories").style.display = "block";
+      }
+    }
+  </script>
 </body>
 </html>
