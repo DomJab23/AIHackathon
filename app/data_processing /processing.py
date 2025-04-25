@@ -4,7 +4,6 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from datetime import datetime
 import os
-print(f"Current working directory: {os.getcwd()}")
 
 
 nltk.download('punkt')
@@ -13,8 +12,6 @@ file_path = "../feedback.csv"
 
 # Load CSV
 df = pd.read_csv(file_path)
-print("Columns in the CSV:", df.columns.tolist())
-exit()
 
 # Convert timestamp to datetime
 df['timestamp'] = pd.to_datetime(df['timestamp'])

@@ -1,2 +1,6 @@
 user_id,session_id,rating,category,comment,related_query,timestamp,locale,country
 e7b58d29-f392-4952-9669-00398bef8543,9dc63d4c-faf5-4f73-aad6-07d1d46eb71c,negative,,aajhbasbsd,,2025-04-25T22:50:07.588512,en_US,IT
+e7b58d29-f392-4952-9669-00398bef8543,0bd7bc0b-ad4a-4be6-8ecc-518c2e0ad775,positive,Helpful,helpful,,2025-04-25T23:07:36.696805,en_US,IT
+e7b58d29-f392-4952-9669-00398bef8543,1fdefb2e-156e-451f-bff6-1ea8c99c3caa,negative,,answer,,2025-04-25T23:07:43.707640,en_US,IT
+e7b58d29-f392-4952-9669-00398bef8543,296bf027-f308-43a4-b22c-78f51bfc3911,positive,Thank You,tahkyoi ,,2025-04-25T23:07:50.431177,en_US,IT
+e7b58d29-f392-4952-9669-00398bef8543,14b77aa6-eec2-4095-8174-a4fe6d71e9b5,positive,Excellent Service,excellent,,2025-04-25T23:08:04.256944,en_US,IT
