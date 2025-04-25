@@ -1,0 +1,29 @@
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+venv/
+.env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE/editor folders and files (e.g., VSCode, PyCharm)
+.vscode/
+.idea/
+
+# Dependency directories
+node_modules/
+env/
+*.egg-info/
+
+# OS-specific files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Output files
+*.csv
+*.json
+output/
