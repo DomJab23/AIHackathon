@@ -13,6 +13,8 @@ file_path = "../feedback.csv"
 
 # Load CSV
 df = pd.read_csv(file_path)
+print("Columns in the CSV:", df.columns.tolist())
+exit()
 
 # Convert timestamp to datetime
 df['timestamp'] = pd.to_datetime(df['timestamp'])
