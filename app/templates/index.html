@@ -5,28 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback Form</title>
     <style>
-        /* Your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>User Feedback Form</h2>
-        <form action="/" method="POST">
-            <!-- Rating selection: Positive or Negative -->
+        <form action="/submit-feedback" method="POST">
+
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+            <input type="hidden" name="session_id" value="{{ session_id }}">
+            
+
+            <!-- Rating selection -->
             <div class="form-group">
                 <label for="rating">Rating:</label>
-                <div>
-                    <input type="radio" id="positive" name="rating" value="positive" required onclick="showCategories('positive')">
-                    <label for="positive">Positive</label>
-                    <input type="radio" id="negative" name="rating" value="negative" onclick="showCategories('negative')">
-                    <label for="negative">Negative</label>
-                </div>
+                <input type="radio" id="positive" name="rating" value="positive" required onclick="showCategories('positive')">
+                <label for="positive">Positive</label>
+                <input type="radio" id="negative" name="rating" value="negative" onclick="showCategories('negative')">
+                <label for="negative">Negative</label>
             </div>
 
-            <!-- Category selection based on rating -->
+            <!-- Positive categories -->
             <div class="form-group" id="positiveCategories" style="display: none;">
                 <label for="category">Category (Positive Feedback):</label>
-                <select id="category" name="category" required>
+                <select id="category" name="category">
                     <option value="">Select Category</option>
                     <option value="Helpful">Helpful</option>
                     <option value="Excellent Service">Excellent Service</option>
@@ -34,9 +80,10 @@
                 </select>
             </div>
 
+            <!-- Negative categories -->
             <div class="form-group" id="negativeCategories" style="display: none;">
                 <label for="category">Category (Negative Feedback):</label>
-                <select id="category" name="category" required>
+                <select id="category" name="category">
                     <option value="">Select Category</option>
                     <option value="Poor Phrasing">Poor Phrasing</option>
                     <option value="Off-topic">Off-topic</option>
@@ -47,13 +94,19 @@
                 </select>
             </div>
 
-            <!-- Textarea for comments -->
+            <!-- Comment -->
             <div class="form-group">
                 <label for="comment">Your Comment:</label>
                 <textarea id="comment" name="comment" placeholder="Enter your feedback here..." required></textarea>
             </div>
 
-            <!-- Submit button -->
+            <!-- Related query / response -->
+            <div class="form-group">
+                <label for="related_query">Related Query / AI Response:</label>
+                <textarea id="related_query" name="related_query" placeholder="What was your original query or the AI's response? (optional)"></textarea>
+            </div>
+
+            <!-- Submit -->
             <div class="form-group">
                 <button type="submit" class="submit-btn">Submit Feedback</button>
             </div>

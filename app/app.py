@@ -1,40 +1,38 @@
 from flask import Flask, render_template, request, redirect
+import uuid
 import csv
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
-# Define the CSV file path
-CSV_FILE_PATH = 'feedback_data.csv'
-
-# Function to write feedback to CSV
-def write_to_csv(category, comment, rating):
-    # Check if file exists, if not, create it and write the header
-    file_exists = os.path.isfile(CSV_FILE_PATH)
-    with open(CSV_FILE_PATH, mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        if not file_exists:
-            writer.writerow(['Category', 'Comment', 'Rating'])  # Write the header
-        writer.writerow([category, comment, rating])
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET"])
 def feedback_form():
-    if request.method == 'POST':
-        # Get the form data
-        category = request.form['category']
-        comment = request.form['comment']
-        rating = request.form['rating']
+    user_id = str(uuid.uuid4())
+    session_id = str(uuid.uuid4())
+    return render_template("index.html", user_id=user_id, session_id=session_id)
 
-        # Write to CSV file
-        write_to_csv(category, comment, rating)
+@app.route("/submit-feedback", methods=["POST"])
+def submit_feedback():
+    data = {
+        "user_id": request.form.get("user_id"),
+        "session_id": request.form.get("session_id"),
+        "rating": request.form.get("rating"),
+        "category": request.form.get("category"),
+        "comment": request.form.get("comment"),
+        "related_query": request.form.get("related_query"),
+        "timestamp": datetime.now().isoformat()
+    }
 
-        # Redirect to a thank you page or back to the form
-        return redirect('/thank-you')
+    file_exists = os.path.isfile("feedback.csv")
+    with open("feedback.csv", mode="a", newline="") as csvfile:
+        fieldnames = data.keys()
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow(data)
 
-    return render_template('index.html')  # Render the HTML form
-@app.route('/thank-you')
-def thank_you():
-    return "Thank you for your feedback! It has been recorded."
-
-if __name__ == '__main__':
+    return redirect("/")
+if __name__ == "__main__":
     app.run(debug=True, port=5001)
+
