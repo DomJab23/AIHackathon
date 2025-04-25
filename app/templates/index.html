@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        /* Your styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Feedback Form</h2>
+        <form action="/" method="POST">
+            <!-- Rating selection: Positive or Negative -->
+            <div class="form-group">
+                <label for="rating">Rating:</label>
+                <div>
+                    <input type="radio" id="positive" name="rating" value="positive" required onclick="showCategories('positive')">
+                    <label for="positive">Positive</label>
+                    <input type="radio" id="negative" name="rating" value="negative" onclick="showCategories('negative')">
+                    <label for="negative">Negative</label>
+                </div>
+            </div>
+
+            <!-- Category selection based on rating -->
+            <div class="form-group" id="positiveCategories" style="display: none;">
+                <label for="category">Category (Positive Feedback):</label>
+                <select id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Helpful">Helpful</option>
+                    <option value="Excellent Service">Excellent Service</option>
+                    <option value="Thank You">Thank You</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="negativeCategories" style="display: none;">
+                <label for="category">Category (Negative Feedback):</label>
+                <select id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Poor Phrasing">Poor Phrasing</option>
+                    <option value="Off-topic">Off-topic</option>
+                    <option value="Not Specific Enough">Not Specific Enough</option>
+                    <option value="Incorrect Answer">Incorrect Answer</option>
+                    <option value="Missing Knowledge">Missing Knowledge</option>
+                    <option value="Too Technical">Too Technical</option>
+                </select>
+            </div>
+
+            <!-- Textarea for comments -->
+            <div class="form-group">
+                <label for="comment">Your Comment:</label>
+                <textarea id="comment" name="comment" placeholder="Enter your feedback here..." required></textarea>
+            </div>
+
+            <!-- Submit button -->
+            <div class="form-group">
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function showCategories(rating) {
+            document.getElementById("positiveCategories").style.display = "none";
+            document.getElementById("negativeCategories").style.display = "none";
+
+            if (rating === "positive") {
+                document.getElementById("positiveCategories").style.display = "block";
+            } else if (rating === "negative") {
+                document.getElementById("negativeCategories").style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

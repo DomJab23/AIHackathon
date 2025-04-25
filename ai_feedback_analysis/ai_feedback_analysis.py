@@ -13,7 +13,7 @@ nlp = spacy.load("en_core_web_sm")
 stopwords = nltk.corpus.stopwords.words("english")
 
 # --- Load and Normalize Columns ---
-df = pd.read_csv("feedback_sample.csv")
+df = pd.read_csv("ai_feedback_analysis/feedback_sample.csv")
 df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 print("Available columns:", df.columns.tolist())
 
