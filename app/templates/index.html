@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Danfoss Chatbot Feedback</title>
   <style>
-    /* Twój cały styl zostaje bez zmian */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f0f2f5;
@@ -128,7 +127,7 @@
       { value: "Excellent Service", label: "Excellent Service" },
       { value: "Thank You", label: "Thank You" }
     ];
-
+  
     const negativeOptions = [
       { value: "Poor Phrasing", label: "Poor Phrasing" },
       { value: "Off-topic", label: "Off-topic" },
@@ -137,21 +136,16 @@
       { value: "Missing Knowledge", label: "Missing Knowledge" },
       { value: "Too Technical", label: "Too Technical" }
     ];
-
+  
     function showCategories(rating) {
       const categorySelect = document.getElementById("category");
-
-      // Wyczyszczamy wszystkie opcje
       categorySelect.innerHTML = '<option value="">Select a category</option>';
-
-      // W zależności od oceny wypełniamy opcje
       let options = [];
       if (rating === "positive") {
         options = positiveOptions;
       } else if (rating === "negative") {
         options = negativeOptions;
       }
-
       options.forEach(opt => {
         const option = document.createElement("option");
         option.value = opt.value;
@@ -159,6 +153,22 @@
         categorySelect.appendChild(option);
       });
     }
+  
+    function setInitialRating() {
+      const params = new URLSearchParams(window.location.search);
+      const rating = params.get('rating');  // <-- Odczytujemy `rating` z URL
+  
+      if (rating === "positive" || rating === "negative") {
+        const radio = document.getElementById(rating);
+        if (radio) {
+          radio.checked = true;
+          showCategories(rating);
+        }
+      }
+    }
+  
+    window.onload = setInitialRating;
   </script>
+  
 </body>
 </html>
