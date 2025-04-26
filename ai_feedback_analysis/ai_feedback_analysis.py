@@ -31,7 +31,7 @@ def preprocess(text):
 
 # --- Visualization: Feedback Categories ---
 plt.figure(figsize=(8, 5))
-sns.countplot(data=df, y="feedback_category", order=df["feedback_category"].value_counts().index)
+sns.countplot(data=df, y="category", order=df["category"].value_counts().index)
 plt.title("Feedback Category Distribution")
 plt.tight_layout()
 plt.savefig("feedback_categories.png")

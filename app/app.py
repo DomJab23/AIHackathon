@@ -29,6 +29,7 @@ feedback_sample_df = pd.read_csv("ai_feedback_analysis/feedback_sample.csv")
 # Process and prepare negative feedback
 nltk.download('punkt')
 nltk.download('stopwords')
+nltk.download('punkt_tab')
 stop_words = set(stopwords.words('english'))
 stemmer = PorterStemmer()
 

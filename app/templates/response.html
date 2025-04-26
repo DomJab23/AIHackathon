@@ -1,12 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Bot Response</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bot Response</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .response-container {
+      background-color: #fff;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+
+    h2 {
+      color: #333;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .bot-response {
+      background-color: #f7f7f7;
+      padding: 16px 20px;
+      border-radius: 20px;
+      color: #333;
+      font-size: 16px;
+      max-width: 90%;
+    }
+
+    .back-link {
+      background-color: #d5001c;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-link:hover {
+      background-color: #b00017;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-    <h2>Bot Response</h2>
-    <p>{{ bot_response }}</p>
 
-    <a href="/">Submit another feedback</a>
+<div class="response-container">
+    <h2>Bot Response</h2>
+    <div class="bot-response">
+        {{ bot_response }}
+    </div>
+    <a href="/" class="back-link">Submit Another Feedback</a>
+</div>
+
 </body>
 </html>
