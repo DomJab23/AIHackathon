@@ -7,100 +7,101 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
       margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+      background-color: #ffffff;   
     }
 
-
-    .chatbot-container {
-      background-color: #fff;
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid #ddd;
+      position: relative;
       width: 100%;
-      max-width: 520px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      padding: 24px;
+      height: 80px; 
+      box-sizing: border-box;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-left img {
+      height: 50px; 
+    }
+
+    .header-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      white-space: nowrap; 
+      pointer-events: none; 
+    }
+
+    .header-right {
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 2; 
+      background: transparent;
+      border: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .thank-you {
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    form {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
-
-
-    .logo {
-      width: 140px;
-      margin: 0 auto;
-      display: block;
-    }
-
-
-    .chat-bubble {
-      background-color: #f7f7f7;
-      padding: 16px 20px;
-      border-radius: 20px;
-      color: #333;
-      max-width: 90%;
-      align-self: flex-start;
-    }
-
-
-    .form-group {
-      background-color: #f7f7f7;
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 10px;
-    }
-
 
     label {
-      display: block;
+      font-weight: bold;
       margin-bottom: 8px;
-      font-weight: 600;
-      color: #333;
+      display: block;
     }
 
-
-    input[type="radio"] {
-      margin-right: 8px;
-    }
-
-
-    input[type="radio"] + label {
-      margin-right: 20px;
-      font-weight: normal;
-    }
-
-
-    select,
-    textarea {
+    select, textarea {
       width: 100%;
       padding: 12px;
-      border-radius: 10px;
+      font-size: 16px;
       border: 1px solid #ccc;
-      font-size: 15px;
+      border-radius: 4px;
+      background-color: #fff;
     }
-
 
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 150px;
     }
 
+    .button-row {
+      display: flex;
+      justify-content: flex-end;
+    }
 
     .submit-btn {
       background-color: #d5001c;
-      color: white;
-      padding: 12px 24px;
+      color: #fff;
       border: none;
-      border-radius: 30px;
+      padding: 12px 32px;
       font-size: 16px;
+      border-radius: 4px;
       cursor: pointer;
-      align-self: flex-end;
     }
-
 
     .submit-btn:hover {
       background-color: #b00017;
@@ -108,31 +109,50 @@
   </style>
 </head>
 <body>
-  <div class="chatbot-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Danfoss_company_logo.svg" alt="Danfoss Logo" class="logo" />
-    
-    <div class="chat-bubble">
-      How can we improve your experience with our chatbot?
+
+  <div class="header">
+    <div class="header-left">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+    </div>
+    <div class="header-center">
+      Help us improve our chatbot!
+    </div>
+    <form action="/submit-feedback" method="POST" class="form-empty">
+      <input type="hidden" name="user_id" value="{{ user_id }}">
+      <input type="hidden" name="session_id" value="{{ session_id }}">
+      <input type="hidden" name="rating" id="ratingInput" value="{{ rating }}" />
+      <input type="hidden" name="category" id="categoryInput" value="" />
+      <input type="hidden" name="comment" id="commentInput" value="" />
+      <button class="header-right">✖</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <div class="thank-you">
+      Thank you for chatting with us. Your opinion matters!
     </div>
 
     <form action="/submit-feedback" method="POST">
-      <input type="hidden" name="user_id" value="{{ user_id }}" />
-      <input type="hidden" name="session_id" value="{{ session_id }}" />
+      <input type="hidden" name="user_id" value="{{ user_id }}">
+      <input type="hidden" name="session_id" value="{{ session_id }}">
       <input type="hidden" name="rating" id="ratingInput" value="{{ rating }}" />
 
-      <div class="form-group">
-        <label for="category">Category:</label>
+      <div>
+        <label for="category">Category</label>
         <select id="category" name="category" required>
           <option value="">Select a category</option>
+          <!-- Options will be populated dynamically -->
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="comment">Your Comment:</label>
+      <div>
+        <label for="comment">Comment</label>
         <textarea id="comment" name="comment" placeholder="Tell us more..." required></textarea>
       </div>
 
-      <button type="submit" class="submit-btn">Send</button>
+      <div class="button-row">
+        <button type="submit" class="submit-btn">Send</button>
+      </div>
     </form>
   </div>
 
@@ -171,7 +191,7 @@
    
      function setInitialRating() {
        const params = new URLSearchParams(window.location.search);
-       const rating = params.get('rating');  // <-- Odczytujemy `rating` z URL
+       const rating = params.get('rating');  // <-- Odczytujemy rating z URL
  
        if (rating === "positive" || rating === "negative") {
          const radio = document.getElementById(rating);
@@ -189,6 +209,11 @@
      }
  
      window.onload = setInitialRating;
+    
+     function closeForm() {
+      document.querySelector('.container').style.display = 'none';
+    }
   </script>
+
 </body>
 </html>
