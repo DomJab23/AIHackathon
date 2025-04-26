@@ -8,7 +8,7 @@ import os
 
 nltk.download('punkt')
 nltk.download('stopwords')
-file_path = "../feedback.csv"
+file_path = "feedback.csv"
 
 # Load CSV
 df = pd.read_csv(file_path)
@@ -38,22 +38,15 @@ common_positive_words = Counter(df[df['rating'] == 'positive']['clean_tokens'].e
 # Strip any leading/trailing spaces and convert to lowercase for consistency
 df['rating'] = df['rating'].str.strip().str.lower()
 
-# Check unique values in the 'rating' column to ensure consistency
-print(df['rating'].unique())
-
-# Check and print some rows from both categories to ensure data integrity
-print(df[df['rating'] == 'positive'].head())
-print(df[df['rating'] == 'negative'].head())
-
 # Now perform the categorization with cleaned data
 common_negative_categories = df[df['rating'] == 'negative']['category'].value_counts().head(5)
 common_positive_categories = df[df['rating'] == 'positive']['category'].value_counts().head(5)
 
-print("Top Negative Categories:\n", common_negative_categories)
-print("Top Positive Categories:\n", common_positive_categories)
-
-print("Top Negative Feedback Categories:\n", common_negative_categories)
-print("Top Positive Feedback Categories:\n", common_positive_categories)
-print("Rating Distribution:\n", rating_counts)
-print("Top Negative Words:\n", common_neg_words)
-print("Top Positive word:", common_positive_words)
+def get_feedback_analysis():
+    return {
+        "common_negative_categories": common_negative_categories.to_dict(),
+        "common_positive_categories": common_positive_categories.to_dict(),
+        "rating_counts": rating_counts.to_dict(),
+        "common_neg_words": common_neg_words,
+        "common_positive_words": common_positive_words
+    }

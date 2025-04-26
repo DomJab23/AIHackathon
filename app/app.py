@@ -1,3 +1,4 @@
+import sys
 import os
 import csv
 from datetime import datetime
@@ -5,9 +6,14 @@ from flask import Flask, render_template, request, redirect, session
 import uuid
 import locale
 import requests
+from data_processing.processing import get_feedback_analysis
 
 app = Flask(__name__)
 
+@app.route("/analytics")
+def show_analytics():
+    analysis = get_feedback_analysis()
+    return render_template("analytics.html", data=analysis)
 # Set a secret key for session management
 app.secret_key = 'your_secret_key_here'  # Replace with your own secret key
 
@@ -38,7 +44,7 @@ def feedback_form():
     # Generate a new session_id on each form load (so it's unique every time)
     session['session_id'] = str(uuid.uuid4())
     
-    return render_template("index.html", user_id=user_id, session_id=session['session_id'])
+    return render_template("/index.html", user_id=user_id, session_id=session['session_id'])
 
 @app.route("/submit-feedback", methods=["POST"])
 def submit_feedback():

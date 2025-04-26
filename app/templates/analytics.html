@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback Analysis Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding: 40px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Feedback Analysis Dashboard</h1>
+
+    <div class="section">
+        <h2>Rating Distribution</h2>
+        <ul>
+            {% for rating, count in data.rating_counts.items() %}
+                <li><strong>{{ rating.capitalize() }}</strong>: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Top Negative Feedback Categories</h2>
+        <ul>
+            {% for category, count in data.common_negative_categories.items() %}
+                <li>{{ category }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Top Positive Feedback Categories</h2>
+        <ul>
+            {% for category, count in data.common_positive_categories.items() %}
+                <li>{{ category }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Top Negative Words</h2>
+        <ul>
+            {% for word, count in data.common_neg_words %}
+                <li>{{ word }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Most Common Positive Word</h2>
+        {% if data.common_positive_words %}
+            <p><strong>{{ data.common_positive_words[0][0] }}</strong> ({{ data.common_positive_words[0][1] }})</p>
+        {% else %}
+            <p>No positive words found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
