@@ -25,3 +25,6 @@ Thumbs.db  # Windows
 
 # Output files
 *.json
+
+# API key
+config.py
