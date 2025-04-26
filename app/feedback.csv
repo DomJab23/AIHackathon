@@ -1,23 +1,5 @@
 user_id,session_id,rating,category,comment,related_query,timestamp,locale,country
-e7b58d29-f392-4952-9669-00398bef8543,9dc63d4c-faf5-4f73-aad6-07d1d46eb71c,negative,,aajhbasbsd,,2025-04-25T22:50:07.588512,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,0bd7bc0b-ad4a-4be6-8ecc-518c2e0ad775,positive,Helpful,helpful,,2025-04-25T23:07:36.696805,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,1fdefb2e-156e-451f-bff6-1ea8c99c3caa,negative,,answer,,2025-04-25T23:07:43.707640,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,296bf027-f308-43a4-b22c-78f51bfc3911,positive,Thank You,tahkyoi ,,2025-04-25T23:07:50.431177,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,14b77aa6-eec2-4095-8174-a4fe6d71e9b5,positive,Excellent Service,excellent,,2025-04-25T23:08:04.256944,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,a15087a9-12c1-4b31-814a-09086651c926,positive,Thank You,aaaaaaa,,2025-04-26T09:50:52.556627,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,f1d97535-ca19-49ed-aae1-9534662d873e,negative,,qiqonqoq,,2025-04-26T09:51:01.080020,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,eb3cc93a-eaa1-4b62-917e-c1df536be85e,negative,,hahahah,,2025-04-26T10:50:51.186411,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,b5bbb3e2-b74e-4a0d-9212-c5954cf859b8,negative,,hahahah,,2025-04-26T10:53:51.841948,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,d1e99af3-2f74-431c-b557-403180e2f2ad,negative,,hahahah,,2025-04-26T11:00:44.788232,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,7678ba6b-d614-42f8-afe8-4d829888d089,negative,,cokolwiek,,2025-04-26T11:01:38.726949,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,ecad24f7-a484-4275-8212-1dc2696da9f2,positive,Helpful,jajajajaja,,2025-04-26T11:09:41.787583,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,e289b6f9-1c75-4820-8441-424d15ee2b01,negative,,yqyqyqyqyq,,2025-04-26T11:10:03.194724,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,9494803a-c0ca-4f40-91eb-fc0f87dc8b9f,negative,,newone,,2025-04-26T11:15:15.856375,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,5222e27b-a91f-4608-86a9-1bc27d8aefcb,negative,,poorpharsing,,2025-04-26T11:19:06.539468,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,02a3921e-575c-4ccb-84d9-09841c21a72c,negative,,newnegativecomment,,2025-04-26T11:21:55.885456,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,dcdd0d85-1d02-47c3-8411-e7a9e67cb7e7,negative,Unspecified,anothercommment,,2025-04-26T11:23:41.235563,en_US,IT
-e7b58d29-f392-4952-9669-00398bef8543,3c5184fb-4b0f-4d47-9354-353e48384890,negative,Unspecified,newonenewonenewone,,2025-04-26T11:25:22.624160,en_US,IT
-32c4d57d-0537-4076-b1b9-6d46b59c10f0,6a22a182-8b26-4b1a-a75a-b1d82d08355c,negative,Unspecified,Bad Bad Bad,,2025-04-26T11:32:18.044357,pl_PL,DK
-32c4d57d-0537-4076-b1b9-6d46b59c10f0,e322c6a7-93f2-4b1f-af31-f6ffa5e17436,negative,Unspecified,I got non answer,,2025-04-26T12:02:55.003855,pl_PL,DK
-32c4d57d-0537-4076-b1b9-6d46b59c10f0,f38080cb-2860-4b97-97fb-77a717d8d2cb,negative,Incorrect Answer,zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz,,2025-04-26T12:04:42.768999,pl_PL,DK
-32c4d57d-0537-4076-b1b9-6d46b59c10f0,5e4a81d7-96a2-4738-b5a5-3e4353bd1a56,positive,Helpful,Realy helpful chat.,,2025-04-26T12:05:23.954875,pl_PL,DK
+42413211-7c35-4bbe-a51a-73ddd14eefa5,5726363b-314d-4a12-970f-c6e4c0c1b95d,positive,Helpful,help,,2025-04-26T12:25:54.319507,en_US,PL
+42413211-7c35-4bbe-a51a-73ddd14eefa5,fa7ef392-5ce2-4b43-ac48-388498ce1aea,negative,Not Specific Enough,specific not,,2025-04-26T12:26:05.826386,en_US,PL
+42413211-7c35-4bbe-a51a-73ddd14eefa5,c9149d1e-042c-404d-a699-89c67a62a0b2,negative,Missing Knowledge,ttt,,2025-04-26T12:26:11.848115,en_US,PL
+42413211-7c35-4bbe-a51a-73ddd14eefa5,f90ec83e-f97f-48cc-8da8-5bd685f0ade9,negative,Too Technical,too technical,,2025-04-26T12:26:22.670529,en_US,PL
