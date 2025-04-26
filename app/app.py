@@ -95,14 +95,19 @@ def show_analytics():
     
     return render_template("analytics.html", data=analysis, backlog=backlog)
 
-# Feedback form route
 @app.route("/", methods=["GET"])
+def quick_feedback():
+    return render_template("simple_feedback.html")
+
+# Feedback form route
+@app.route("/index.html", methods=["GET"])
 def feedback_form():
     if 'user_id' not in session:
         session['user_id'] = str(uuid.uuid4())
     session['session_id'] = str(uuid.uuid4())
     
     return render_template("index.html", user_id=session['user_id'], session_id=session['session_id'])
+
 
 # Submit feedback route
 @app.route("/submit-feedback", methods=["POST"])
@@ -139,7 +144,7 @@ def submit_feedback():
         writer.writerow(data)
 
     # Generate response
-    if rating.lower().strip() == "negative":
+    if rating == "negative":
         bot_response = suggest_fix(comment)
     else:
         bot_response = "Thank you for your feedback! We're glad you found the information helpful."

@@ -1,0 +1,63 @@
+<!-- simple_feedback.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Feedback</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    h1 {
+      margin-bottom: 40px;
+      color: #333;
+    }
+    .feedback-buttons {
+      display: flex;
+      gap: 40px;
+    }
+    .feedback-button {
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .feedback-button:hover {
+      background-color: #e0e0e0;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Was this helpful?</h1>
+
+  <div class="feedback-buttons">
+    <button class="feedback-button" onclick="sendFeedback('positive')">👍</button>
+    <button class="feedback-button" onclick="sendFeedback('negative')">👎</button>
+  </div>
+
+  <script>
+    function sendFeedback(rating) {
+      window.location.href = `/index.html?rating=${rating}`;
+    }
+  </script>
+
+</body>
+</html>

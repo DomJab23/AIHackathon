@@ -98,14 +98,6 @@
       <input type="hidden" name="session_id" value="{{ session_id }}" />
 
       <div class="form-group">
-        <label for="rating">How would you rate this response?</label>
-        <input type="radio" id="positive" name="rating" value="positive" required onclick="showCategories('positive')" />
-        <label for="positive">Positive</label>
-        <input type="radio" id="negative" name="rating" value="negative" onclick="showCategories('negative')" />
-        <label for="negative">Negative</label>
-      </div>
-
-      <div class="form-group">
         <label for="category">Category:</label>
         <select id="category" name="category" required>
           <option value="">Select a category</option>
@@ -153,7 +145,6 @@
         categorySelect.appendChild(option);
       });
     }
-  
     function setInitialRating() {
       const params = new URLSearchParams(window.location.search);
       const rating = params.get('rating');  // <-- Odczytujemy `rating` z URL
@@ -164,6 +155,12 @@
           radio.checked = true;
           showCategories(rating);
         }
+
+        const ratingInput = document.getElementById("ratingInput");
+        if (ratingInput) {
+          ratingInput.value = rating;
+        }
+        showCategories(rating);
       }
     }
   
