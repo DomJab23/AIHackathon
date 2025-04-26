@@ -4,19 +4,6 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from collections import Counter
 import os
-
-nltk.download('punkt')
-nltk.download('stopwords')
-
-file_path = "feedback.csv"
-
-extra_stopwords = {'ok', 'okay', 'sure', 'yeah', 'uh', 'hmm', 'hi', 'hello', 'thanks', 'thank'}
-stop_words = set(stopwords.words('english')).union(extra_stopwords)
-
-
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 from nltk import pos_tag
 
 nltk.download('averaged_perceptron_tagger')
@@ -24,8 +11,30 @@ nltk.download('averaged_perceptron_tagger_eng')
 nltk.download('punkt')
 nltk.download('stopwords')
 
+file_path = "feedback.csv"
 
-stop_words = set(stopwords.words('english'))
+extra_stopwords = {'ok', 'okay', 'sure', 'yeah', 'uh', 'hmm', 'hi', 'hello', 'thanks', 'thank', 'oo', 'yup', 'nah',
+    'aa', 'aaa', 'a', 'b', 'bb', 'bbb', 'c', 'cc', 'ccc',
+    'd', 'dd', 'ddd', 'e', 'ee', 'eee', 'f', 'ff', 'fff',
+    'g', 'gg', 'ggg', 'h', 'hh', 'hhh', 'i', 'ii', 'iii',
+    'j', 'jj', 'jjj', 'k', 'kk', 'kkk', 'l', 'll', 'lll',
+    'm', 'mm', 'mmm', 'n', 'nn', 'nnn', 'o', 'oo', 'ooo',
+    'p', 'pp', 'ppp', 'q', 'qq', 'qqq', 'r', 'rr', 'rrr',
+    's', 'ss', 'sss', 't', 'tt', 'ttt', 'u', 'uu', 'uuu',
+    'v', 'vv', 'vvv', 'w', 'ww', 'www', 'x', 'xx', 'xxx',
+    'y', 'yy', 'yyy', 'z', 'zz', 'zzz',
+    'hmm', 'uh', 'um', 'huh', 'lol', 'lmao', 'ok', 'okay',
+    'yes', 'no', 'maybe', 'idk', 'hahaha', 'haha', 'heh', 'meh',
+    'huh', 'hmmm', 'hmm', 'huhuh', 'yup', 'nope', 'yeah',
+    'hahah', 'uhh', 'umm', 'omg', 'wtf', 'smh', 'hahaha',
+    'hi', 'hello', 'yo', 'sup', 'hey', 'thx', 'ty', 'np',
+    'pls', 'plz', 'k', 'kk', 'brb', 'gtg', 'btw', 'idc',
+    'ikr', 'tbh', 'bff', 'rofl', 'xd'
+}
+
+stop_words = set(stopwords.words('english')).union(extra_stopwords)
+
+
 
 def clean_text(text):
     if pd.isnull(text):
