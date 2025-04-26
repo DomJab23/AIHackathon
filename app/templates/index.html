@@ -16,6 +16,7 @@
       min-height: 100vh;
     }
 
+
     .chatbot-container {
       background-color: #fff;
       width: 100%;
@@ -28,11 +29,13 @@
       gap: 20px;
     }
 
+
     .logo {
       width: 140px;
       margin: 0 auto;
       display: block;
     }
+
 
     .chat-bubble {
       background-color: #f7f7f7;
@@ -43,12 +46,14 @@
       align-self: flex-start;
     }
 
+
     .form-group {
       background-color: #f7f7f7;
       border-radius: 20px;
       padding: 16px;
       margin-bottom: 10px;
     }
+
 
     label {
       display: block;
@@ -57,14 +62,17 @@
       color: #333;
     }
 
+
     input[type="radio"] {
       margin-right: 8px;
     }
+
 
     input[type="radio"] + label {
       margin-right: 20px;
       font-weight: normal;
     }
+
 
     select,
     textarea {
@@ -75,10 +83,12 @@
       font-size: 15px;
     }
 
+
     textarea {
       resize: vertical;
       min-height: 80px;
     }
+
 
     .submit-btn {
       background-color: #d5001c;
@@ -90,6 +100,7 @@
       cursor: pointer;
       align-self: flex-end;
     }
+
 
     .submit-btn:hover {
       background-color: #b00017;
@@ -140,11 +151,10 @@
       { value: "Too Technical", label: "Too Technical" }
     ];
     function showCategories(rating) {
-      const categorySelect = document.getElementById("category");
-      categorySelect.innerHTML = '<option value="">Select a category</option>';
-      let options = [];
+      document.getElementById("positiveCategories").style.display = "none";
+      document.getElementById("negativeCategories").style.display = "none";
       if (rating === "positive") {
-        options = positiveOptions;
+        document.getElementById("positiveCategories").style.display = "block";
       } else if (rating === "negative") {
         options = negativeOptions;
       }
