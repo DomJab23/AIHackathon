@@ -118,6 +118,7 @@
     <form action="/submit-feedback" method="POST">
       <input type="hidden" name="user_id" value="{{ user_id }}" />
       <input type="hidden" name="session_id" value="{{ session_id }}" />
+      <input type="hidden" name="rating" id="ratingInput" value="{{ rating }}" />
 
       <div class="form-group">
         <label for="category">Category:</label>
@@ -137,52 +138,57 @@
 
   <script>
     const positiveOptions = [
-      { value: "Helpful", label: "Helpful" },
-      { value: "Excellent Service", label: "Excellent Service" },
-      { value: "Thank You", label: "Thank You" }
-    ];
-  
-    const negativeOptions = [
-      { value: "Poor Phrasing", label: "Poor Phrasing" },
-      { value: "Off-topic", label: "Off-topic" },
-      { value: "Not Specific Enough", label: "Not Specific Enough" },
-      { value: "Incorrect Answer", label: "Incorrect Answer" },
-      { value: "Missing Knowledge", label: "Missing Knowledge" },
-      { value: "Too Technical", label: "Too Technical" }
-    ];
-    function showCategories(rating) {
-      document.getElementById("positiveCategories").style.display = "none";
-      document.getElementById("negativeCategories").style.display = "none";
-      if (rating === "positive") {
-        document.getElementById("positiveCategories").style.display = "block";
-      } else if (rating === "negative") {
-        options = negativeOptions;
-      }
-      options.forEach(opt => {
-        const option = document.createElement("option");
-        option.value = opt.value;
-        option.textContent = opt.label;
-        categorySelect.appendChild(option);
-      });
-    }
-    function setInitialRating() {
-      const params = new URLSearchParams(window.location.search);
-      const rating = params.get('rating');  // <-- Odczytujemy `rating` z URL
-  
-      if (rating === "positive" || rating === "negative") {
-        const radio = document.getElementById(rating);
-        if (radio) {
-          radio.checked = true;
-          showCategories(rating);
-        }
-
-        const ratingInput = document.getElementById("ratingInput");
-        if (ratingInput) {
-          ratingInput.value = rating;
-        }
-        showCategories(rating);
-      }
-    }
+       { value: "Helpful", label: "Helpful" },
+       { value: "Excellent Service", label: "Excellent Service" },
+       { value: "Thank You", label: "Thank You" }
+     ];
+ 
+     const negativeOptions = [
+       { value: "Poor Phrasing", label: "Poor Phrasing" },
+       { value: "Off-topic", label: "Off-topic" },
+       { value: "Not Specific Enough", label: "Not Specific Enough" },
+       { value: "Incorrect Answer", label: "Incorrect Answer" },
+       { value: "Missing Knowledge", label: "Missing Knowledge" },
+       { value: "Too Technical", label: "Too Technical" }
+     ];
+ 
+     function showCategories(rating) {
+       const categorySelect = document.getElementById("category");
+       categorySelect.innerHTML = '<option value="">Select a category</option>';
+       let options = [];
+       if (rating === "positive") {
+         options = positiveOptions;
+       } else if (rating === "negative") {
+         options = negativeOptions;
+       }
+       options.forEach(opt => {
+         const option = document.createElement("option");
+         option.value = opt.value;
+         option.textContent = opt.label;
+         categorySelect.appendChild(option);
+       });
+     }
+   
+     function setInitialRating() {
+       const params = new URLSearchParams(window.location.search);
+       const rating = params.get('rating');  // <-- Odczytujemy `rating` z URL
+ 
+       if (rating === "positive" || rating === "negative") {
+         const radio = document.getElementById(rating);
+         if (radio) {
+           radio.checked = true;
+           showCategories(rating);
+         }
+ 
+         const ratingInput = document.getElementById("ratingInput");
+         if (ratingInput) {
+           ratingInput.value = rating;
+         }
+         showCategories(rating);
+       }
+     }
+ 
+     window.onload = setInitialRating;
   </script>
 </body>
 </html>
