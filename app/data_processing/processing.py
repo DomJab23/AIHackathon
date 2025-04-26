@@ -120,6 +120,9 @@ def get_feedback_analysis():
     # NEW: Category counts for all feedback (used for backlog)
     category_counts = df['category'].value_counts().to_dict()
 
+    user_feedback_counts = Counter(df['user_id'])
+    top_users = user_feedback_counts.most_common(10)
+
     return {
         'rating_counts': rating_counts,
         'common_negative_categories': common_negative_categories,
@@ -128,5 +131,6 @@ def get_feedback_analysis():
         'common_positive_words': common_positive_words,
         'top_country': top_country,
         'all_countries': all_countries,
-        'category_counts': category_counts,  # <-- added to fix analytics page
+        'category_counts': category_counts,
+        'top_users': top_users,
     }
