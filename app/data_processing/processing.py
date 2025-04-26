@@ -13,27 +13,31 @@ nltk.download('stopwords')
 
 file_path = "feedback.csv"
 
-extra_stopwords = {'ok', 'okay', 'sure', 'yeah', 'uh', 'hmm', 'hi', 'hello', 'thanks', 'thank', 'oo', 'yup', 'nah',
-    'aa', 'aaa', 'a', 'b', 'bb', 'bbb', 'c', 'cc', 'ccc',
-    'd', 'dd', 'ddd', 'e', 'ee', 'eee', 'f', 'ff', 'fff',
-    'g', 'gg', 'ggg', 'h', 'hh', 'hhh', 'i', 'ii', 'iii',
-    'j', 'jj', 'jjj', 'k', 'kk', 'kkk', 'l', 'll', 'lll',
-    'm', 'mm', 'mmm', 'n', 'nn', 'nnn', 'o', 'oo', 'ooo',
-    'p', 'pp', 'ppp', 'q', 'qq', 'qqq', 'r', 'rr', 'rrr',
-    's', 'ss', 'sss', 't', 'tt', 'ttt', 'u', 'uu', 'uuu',
-    'v', 'vv', 'vvv', 'w', 'ww', 'www', 'x', 'xx', 'xxx',
-    'y', 'yy', 'yyy', 'z', 'zz', 'zzz',
-    'hmm', 'uh', 'um', 'huh', 'lol', 'lmao', 'ok', 'okay',
-    'yes', 'no', 'maybe', 'idk', 'hahaha', 'haha', 'heh', 'meh',
+extra_stopwords = {'okay', 'sure', 'yeah', 'hmm', 'hello', 'thanks', 'thank', 'yup', 'nah',
+    'hmm', 'huh', 'lol', 'lmao', 'okay',
+    'yes', 'maybe', 'idk', 'hahaha', 'haha', 'heh', 'meh',
     'huh', 'hmmm', 'hmm', 'huhuh', 'yup', 'nope', 'yeah',
     'hahah', 'uhh', 'umm', 'omg', 'wtf', 'smh', 'hahaha',
-    'hi', 'hello', 'yo', 'sup', 'hey', 'thx', 'ty', 'np',
+    'hello', 'yo', 'sup', 'hey', 'thx',
     'pls', 'plz', 'k', 'kk', 'brb', 'gtg', 'btw', 'idc',
-    'ikr', 'tbh', 'bff', 'rofl', 'xd'
+    'ikr', 'tbh', 'bff', 'rofl'
+}
+
+special_combine_words = {
+    "lot", "way", "bit", "kind", "sort", "piece", "deal", "load", 
+    "bunch", "heap", "ton", "touch", "batch"
 }
 
 stop_words = set(stopwords.words('english')).union(extra_stopwords)
 
+def is_garbage_word(word):
+    if len(word) < 3:
+        return True
+    if all(c == word[0] for c in word):  # aaa, bbb, etc.
+        return True
+    if word in extra_stopwords:
+        return True
+    return False
 
 
 def clean_text(text):
@@ -49,14 +53,14 @@ def clean_text(text):
         word, tag = tagged_words[i]
 
         # Pomijamy niealfabetyczne słowa i stopwords
-        if not word.isalpha() or word in stop_words:
+        if not word.isalpha() or word in stop_words or is_garbage_word(word):
             i += 1
             continue
 
         phrase = [word]
 
         # Próbujemy stworzyć 2- lub 3-wyrazowe frazy
-        if i + 1 < len(tagged_words):
+        if word in special_combine_words and (i + 1) < len(tagged_words):
             next_word, next_tag = tagged_words[i+1]
             if next_word.isalpha() and next_word not in stop_words:
                 # 2-wyrazowa fraza
