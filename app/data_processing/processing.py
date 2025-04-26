@@ -7,7 +7,6 @@ import os
 from nltk import pos_tag
 
 nltk.download('averaged_perceptron_tagger')
-nltk.download('averaged_perceptron_tagger_eng')
 nltk.download('punkt')
 nltk.download('stopwords')
 
@@ -25,7 +24,7 @@ extra_stopwords = {'okay', 'sure', 'yeah', 'hmm', 'hello', 'thanks', 'thank', 'y
 
 special_combine_words = {
     "lot", "way", "bit", "kind", "sort", "piece", "deal", "load", 
-    "bunch", "heap", "ton", "touch", "batch"
+    "bunch", "heap", "ton", "touch", "batch", "wrong"  # Dodanie "wrong"
 }
 
 stop_words = set(stopwords.words('english')).union(extra_stopwords)
@@ -59,28 +58,29 @@ def clean_text(text):
 
         phrase = [word]
 
-        # Próbujemy stworzyć 2- lub 3-wyrazowe frazy
-        if word in special_combine_words and (i + 1) < len(tagged_words):
-            next_word, next_tag = tagged_words[i+1]
+        # Sprawdzamy, czy to specjalne słowo do połączenia
+        if word == "lot" and (i + 1) < len(tagged_words) and tagged_words[i+1][0] == "of":
+            # Zbieramy całą frazę "lot of" plus to, co za nią następuje
+            if i + 2 < len(tagged_words):
+                next_word = tagged_words[i+2][0]
+                if next_word.isalpha() and next_word not in stop_words:
+                    # Tworzymy całą frazę
+                    phrase = [f"lot_of_{next_word}"]
+                    filtered_phrases.append('_'.join(phrase))
+                    i += 3  # Zwiększamy indeks o 3, bo dodaliśmy frazę "lot of"
+                    continue
+
+        # Sprawdzamy, czy "wrong" jest przed kolejnym słowem
+        if word == "wrong" and (i + 1) < len(tagged_words):
+            next_word = tagged_words[i+1][0]
             if next_word.isalpha() and next_word not in stop_words:
-                # 2-wyrazowa fraza
-                phrase.append(next_word)
-
-                # Sprawdźmy czy można jeszcze dodać trzecie słowo
-                if i + 2 < len(tagged_words):
-                    third_word, third_tag = tagged_words[i+2]
-                    if third_word.isalpha() and third_word not in stop_words:
-                        # 3-wyrazowa fraza
-                        phrase.append(third_word)
-                        filtered_phrases.append('_'.join(phrase))
-                        i += 3
-                        continue
-
+                # Tworzymy frazę "wrong_" plus następne słowo
+                phrase = [f"wrong_{next_word}"]
                 filtered_phrases.append('_'.join(phrase))
-                i += 2
+                i += 2  # Zwiększamy indeks o 2, bo dodaliśmy frazę "wrong"
                 continue
 
-        # Jeśli nie udało się połączyć, dodaj pojedyncze znaczące słowo
+        # Jeśli nie udało się połączyć, dodajemy pojedyncze słowo
         filtered_phrases.append(word)
         i += 1
 
@@ -88,36 +88,36 @@ def clean_text(text):
 
 
 def get_feedback_analysis():
-    # Load latest feedback
+    # Wczytanie danych feedbacku
     if not os.path.exists(file_path):
         return {}
 
     df = pd.read_csv(file_path)
 
-    # Basic cleanup
+    # Podstawowa obróbka danych
     df['rating'] = df['rating'].str.strip().str.lower()
     df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
     df['clean_tokens'] = df['comment'].apply(clean_text)
 
-    # Ratings breakdown
+    # Analiza ocen
     rating_counts = df['rating'].value_counts().to_dict()
 
-    # Category breakdown
+    # Analiza kategorii
     common_negative_categories = df[df['rating'] == 'negative']['category'].value_counts().to_dict()
     common_positive_categories = df[df['rating'] == 'positive']['category'].value_counts().to_dict()
 
-    # Common words in feedback
+    # Najczęstsze słowa w feedbacku
     neg_tokens = df[df['rating'] == 'negative']['clean_tokens'].explode()
     common_neg_words = Counter(neg_tokens).most_common(10)
 
     pos_tokens = df[df['rating'] == 'positive']['clean_tokens'].explode()
     common_positive_words = Counter(pos_tokens).most_common(5)
 
-    # Country breakdown
+    # Rozkład krajów
     top_country = df['country'].value_counts().head(5).to_dict()
     all_countries = df['country'].value_counts().to_dict()
 
-    # NEW: Category counts for all feedback (used for backlog)
+    # Nowość: Analiza kategorii dla wszystkich feedbacków
     category_counts = df['category'].value_counts().to_dict()
 
     user_feedback_counts = Counter(df['user_id'])
