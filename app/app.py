@@ -85,12 +85,15 @@ def submit_feedback():
 
     rating = request.form.get("rating")
     comment = request.form.get("comment")
+    category = request.form.get("category")
+    if rating and rating.lower().strip() == "negative" and not category:
+        category = "Unspecified"
 
     data = {
         "user_id": request.form.get("user_id"),
         "session_id": session['session_id'],
         "rating": rating,
-        "category": request.form.get("category"),
+        "category": category,  # <-- Use the possibly fixed category here!
         "comment": comment,
         "related_query": request.form.get("related_query"),
         "timestamp": datetime.now().isoformat(),
@@ -108,7 +111,6 @@ def submit_feedback():
         if is_empty:
             writer.writeheader()
         writer.writerow(data)
-
     # Generate bot response
     if rating.lower().strip() == "negative":
         bot_response = suggest_fix(comment)

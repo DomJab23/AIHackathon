@@ -117,18 +117,18 @@
       </div>
 
       <div class="form-group" id="positiveCategories" style="display: none;">
-        <label for="category">Category (Positive):</label>
-        <select id="category" name="category">
+        <label for="positiveCategory">Category (Positive):</label>
+        <select id="positiveCategory" name="category">
           <option value="">Select Category</option>
           <option value="Helpful">Helpful</option>
           <option value="Excellent Service">Excellent Service</option>
           <option value="Thank You">Thank You</option>
         </select>
       </div>
-
+      
       <div class="form-group" id="negativeCategories" style="display: none;">
-        <label for="category">Category (Negative):</label>
-        <select id="category" name="category">
+        <label for="negativeCategory">Category (Negative):</label>
+        <select id="negativeCategory" name="category">
           <option value="">Select Category</option>
           <option value="Poor Phrasing">Poor Phrasing</option>
           <option value="Off-topic">Off-topic</option>
@@ -147,15 +147,19 @@
       <button type="submit" class="submit-btn">Send</button>
     </form>
   </div>
-
   <script>
     function showCategories(rating) {
       document.getElementById("positiveCategories").style.display = "none";
       document.getElementById("negativeCategories").style.display = "none";
+      document.getElementById("positiveCategory").required = false;
+      document.getElementById("negativeCategory").required = false;
+  
       if (rating === "positive") {
         document.getElementById("positiveCategories").style.display = "block";
+        document.getElementById("positiveCategory").required = true;
       } else if (rating === "negative") {
         document.getElementById("negativeCategories").style.display = "block";
+        document.getElementById("negativeCategory").required = true;
       }
     }
   </script>
