@@ -164,7 +164,15 @@
                     <tr {% if item.Occurrences > 3 %}class="high-priority"{% endif %}>
                         <td>{{ item.Category }}</td>
                         <td>{{ item.Occurrences }}</td>
-                        <td>{{ item.Suggested_Action }}</td>
+                        <td>
+                            {{ item.Suggested_Action }}
+                            {% if item.Suggested_Action == "Review manually" %}
+                                <form action="/review-comments" method="GET" style="display:inline;">
+                                    <input type="hidden" name="category" value="{{ item.Category }}">
+                                    <button type="submit" style="margin-left:10px;">See Comments</button>
+                                </form>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -107,6 +107,20 @@ def feedback_form():
     session['session_id'] = str(uuid.uuid4())
     
     return render_template("index.html", user_id=session['user_id'], session_id=session['session_id'])
+@app.route("/review-comments", methods=["GET"])
+def review_comments():
+    category = request.args.get("category")
+    
+    comments = []
+    
+    if category:
+        # Read feedback.csv
+        if os.path.exists("feedback.csv"):
+            df = pd.read_csv("feedback.csv")
+            # Filter comments matching the category
+            comments = df[df['category'] == category]['comment'].dropna().tolist()
+    
+    return render_template("review_comments.html", category=category, comments=comments)
 
 
 # Submit feedback route

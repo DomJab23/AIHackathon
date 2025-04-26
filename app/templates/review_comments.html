@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Comments for {{ category }}</title>
+</head>
+<body>
+    <h1>Comments for Category: "{{ category }}"</h1>
+    
+    {% if comments %}
+        <ul>
+            {% for comment in comments %}
+                <li>{{ comment }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No comments found for this category.</p>
+    {% endif %}
+    
+    <br>
+    <a href="/analytics">← Back to Analytics</a>
+</body>
+</html>
