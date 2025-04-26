@@ -47,6 +47,8 @@
       font-size: 24px;
       cursor: pointer;
       z-index: 2; 
+      background: transparent;
+      border: none;
     }
 
     .container {
@@ -115,7 +117,14 @@
     <div class="header-center">
       Help us improve our chatbot!
     </div>
-    <div class="header-right" onclick="closeForm()">✖</div>
+    <form action="/submit-feedback" method="POST" class="form-empty">
+      <input type="hidden" name="user_id" value="{{ user_id }}">
+      <input type="hidden" name="session_id" value="{{ session_id }}">
+      <input type="hidden" name="rating" id="ratingInput" value="{{ rating }}" />
+      <input type="hidden" name="category" id="categoryInput" value="" />
+      <input type="hidden" name="comment" id="commentInput" value="" />
+      <button class="header-right">✖</button>
+    </form>
   </div>
 
   <div class="container">
@@ -126,14 +135,7 @@
     <form action="/submit-feedback" method="POST">
       <input type="hidden" name="user_id" value="{{ user_id }}">
       <input type="hidden" name="session_id" value="{{ session_id }}">
-
-      <div>
-        <label>Feedback Type</label>
-        <input type="radio" id="positive" name="rating" value="Positive" required onclick="populateCategories('positive')">
-        <label for="positive">Positive</label>
-        <input type="radio" id="negative" name="rating" value="Negative" onclick="populateCategories('negative')">
-        <label for="negative">Negative</label>
-      </div>
+      <input type="hidden" name="rating" id="ratingInput" value="{{ rating }}" />
 
       <div>
         <label for="category">Category</label>
@@ -155,38 +157,61 @@
   </div>
 
   <script>
-    function closeForm() {
+    const positiveOptions = [
+       { value: "Helpful", label: "Helpful" },
+       { value: "Excellent Service", label: "Excellent Service" },
+       { value: "Thank You", label: "Thank You" }
+     ];
+ 
+     const negativeOptions = [
+       { value: "Poor Phrasing", label: "Poor Phrasing" },
+       { value: "Off-topic", label: "Off-topic" },
+       { value: "Not Specific Enough", label: "Not Specific Enough" },
+       { value: "Incorrect Answer", label: "Incorrect Answer" },
+       { value: "Missing Knowledge", label: "Missing Knowledge" },
+       { value: "Too Technical", label: "Too Technical" }
+     ];
+ 
+     function showCategories(rating) {
+       const categorySelect = document.getElementById("category");
+       categorySelect.innerHTML = '<option value="">Select a category</option>';
+       let options = [];
+       if (rating === "positive") {
+         options = positiveOptions;
+       } else if (rating === "negative") {
+         options = negativeOptions;
+       }
+       options.forEach(opt => {
+         const option = document.createElement("option");
+         option.value = opt.value;
+         option.textContent = opt.label;
+         categorySelect.appendChild(option);
+       });
+     }
+   
+     function setInitialRating() {
+       const params = new URLSearchParams(window.location.search);
+       const rating = params.get('rating');  // <-- Odczytujemy rating z URL
+ 
+       if (rating === "positive" || rating === "negative") {
+         const radio = document.getElementById(rating);
+         if (radio) {
+           radio.checked = true;
+           showCategories(rating);
+         }
+ 
+         const ratingInput = document.getElementById("ratingInput");
+         if (ratingInput) {
+           ratingInput.value = rating;
+         }
+         showCategories(rating);
+       }
+     }
+ 
+     window.onload = setInitialRating;
+    
+     function closeForm() {
       document.querySelector('.container').style.display = 'none';
-    }
-
-    function populateCategories(type) {
-      const categorySelect = document.getElementById('category');
-      categorySelect.innerHTML = '<option value="">Select a category</option>'; // Reset first
-
-      let options = [];
-      if (type === 'positive') {
-        options = [
-          'Helpful',
-          'Excellent Service',
-          'Thank You'
-        ];
-      } else if (type === 'negative') {
-        options = [
-          'Poor Phrasing',
-          'Off-topic',
-          'Not Specific Enough',
-          'Incorrect Answer',
-          'Missing Knowledge',
-          'Too Technical'
-        ];
-      }
-
-      options.forEach(option => {
-        const opt = document.createElement('option');
-        opt.value = option;
-        opt.textContent = option;
-        categorySelect.appendChild(opt);
-      });
     }
   </script>
 
