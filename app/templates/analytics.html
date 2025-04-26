@@ -19,77 +19,235 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex; /* Flexbox to align data and graph horizontally */
+            justify-content: space-between;
+            align-items: center;
         }
-        ul {
+        .section ul {
             list-style-type: none;
             padding-left: 0;
+            margin: 0;
         }
-        li {
+        .section li {
             padding: 4px 0;
         }
+        .graph-container {
+            width: 50%; /* Make the graph container take up half the space */
+        }
+        canvas {
+            width: 100%% !important; /* Full width of the container */
+            height: 100%% !important; /* Keep aspect ratio */
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <h1>Feedback Analysis Dashboard</h1>
 
+    <!-- Rating Distribution -->
     <div class="section">
-        <h2>Rating Distribution</h2>
-        <ul>
-            {% for rating, count in data.rating_counts.items() %}
-                <li><strong>{{ rating.capitalize() }}</strong>: {{ count }}</li>
-            {% endfor %}
-        </ul>
+        <div class="data-container">
+            <h2>Rating Distribution</h2>
+            <ul>
+                {% for rating, count in data.rating_counts.items() %}
+                    <li><strong>{{ rating.capitalize() }}</strong>: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="graph-container">
+            <!-- Graph for Rating Distribution -->
+            <canvas id="ratingChart"></canvas>
+        </div>
     </div>
 
+    <!-- Top Negative Feedback Categories -->
     <div class="section">
-        <h2>Top Negative Feedback Categories</h2>
-        <ul>
-            {% for category, count in data.common_negative_categories.items() %}
-                <li>{{ category }}: {{ count }}</li>
-            {% endfor %}
-        </ul>
+        <div class="data-container">
+            <h2>Top Negative Feedback Categories</h2>
+            <ul>
+                {% for category, count in data.common_negative_categories.items() %}
+                    <li>{{ category }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="graph-container">
+            <!-- Graph for Negative Feedback Categories -->
+            <canvas id="negativeCategoriesChart"></canvas>
+        </div>
     </div>
 
+    <!-- Top Positive Feedback Categories -->
     <div class="section">
-        <h2>Top Positive Feedback Categories</h2>
-        <ul>
-            {% for category, count in data.common_positive_categories.items() %}
-                <li>{{ category }}: {{ count }}</li>
-            {% endfor %}
-        </ul>
+        <div class="data-container">
+            <h2>Top Positive Feedback Categories</h2>
+            <ul>
+                {% for category, count in data.common_positive_categories.items() %}
+                    <li>{{ category }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="graph-container">
+            <!-- Graph for Positive Feedback Categories -->
+            <canvas id="positiveCategoriesChart"></canvas>
+        </div>
     </div>
 
+    <!-- Top Negative Words -->
     <div class="section">
-        <h2>Top Negative Words</h2>
-        <ul>
-            {% for word, count in data.common_neg_words %}
-                <li>{{ word }}: {{ count }}</li>
-            {% endfor %}
-        </ul>
+        <div class="data-container">
+            <h2>Top Negative Words</h2>
+            <ul>
+                {% for word, count in data.common_neg_words %}
+                    <li>{{ word }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="graph-container">
+            <!-- Graph for Negative Words -->
+            <canvas id="negativeWordsChart"></canvas>
+        </div>
     </div>
 
+    <!-- Most Common Positive Word -->
     <div class="section">
-        <h2>Most Common Positive Word</h2>
-        {% if data.common_positive_words %}
-            <p><strong>{{ data.common_positive_words[0][0] }}</strong> ({{ data.common_positive_words[0][1] }})</p>
-        {% else %}
-            <p>No positive words found.</p>
-        {% endif %}
+        <div class="data-container">
+            <h2>Most Common Positive Word</h2>
+            {% if data.common_positive_words %}
+                <p><strong>{{ data.common_positive_words[0][0] }}</strong> ({{ data.common_positive_words[0][1] }})</p>
+            {% else %}
+                <p>No positive words found.</p>
+            {% endif %}
+        </div>
+        <div class="graph-container">
+            <!-- Graph for Positive Words -->
+            <canvas id="positiveWordsChart"></canvas>
+        </div>
     </div>
+
+    <!-- Country with Most Feedback -->
     <div class="section">
-        <h2>Country with Most Feedback</h2>
-        {% for country, count in data.top_country.items() %}
-            <p><strong>{{ country }}</strong>: {{ count }} feedback(s)</p>
-        {% endfor %}
-    </div>
-    
-    <div class="section">
-        <h2>All Countries and Feedback Counts</h2>
-        <ul>
-            {% for country, count in data.all_countries.items() %}
-                <li>{{ country }}: {{ count }} feedback(s)</li>
+        <div class="data-container">
+            <h2>Country with Most Feedback</h2>
+            {% for country, count in data.top_country.items() %}
+                <p><strong>{{ country }}</strong>: {{ count }} feedback(s)</p>
             {% endfor %}
-        </ul>
+        </div>
+        <div class="graph-container">
+            <!-- Graph for Country with Most Feedback -->
+            <canvas id="countryFeedbackChart"></canvas>
+        </div>
     </div>
+
+    <!-- All Countries and Feedback Counts -->
+    <div class="section">
+        <div class="data-container">
+            <h2>All Countries and Feedback Counts</h2>
+            <ul>
+                {% for country, count in data.all_countries.items() %}
+                    <li>{{ country }}: {{ count }} feedback(s)</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="graph-container">
+            <!-- Graph for All Countries -->
+            <canvas id="allCountriesChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Backlog Suggestions -->
+    <div class="section">
+        <h2>Backlog Suggestions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Occurrences</th>
+                    <th>Suggested Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in backlog %}
+                    <tr {% if item['Occurrences'] > 10 %}class="high-priority"{% endif %}>
+                        <td>{{ item['Category'] }}</td>
+                        <td>{{ item['Occurrences'] }}</td>
+                        <td>{{ item['Suggested Action'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Auto-refresh the page every 5 seconds -->
+    <script>
+        setInterval(function() {
+            window.location.reload();
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+
+    <!-- Chart.js Data Rendering -->
+    <script>
+        // Rating Distribution Chart
+        var ratingData = {
+            labels: {{ data.rating_counts.keys() | list | tojson }},
+            datasets: [{
+                label: 'Rating Distribution',
+                data: {{ data.rating_counts.values() | list | tojson }},
+                backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
+                borderColor: ['#388E3C', '#F57C00', '#D32F2F'],
+                borderWidth: 1
+            }]
+        };
+
+        var ratingChart = new Chart(document.getElementById("ratingChart"), {
+            type: 'pie',
+            data: ratingData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Negative Feedback Categories Chart
+        var negativeCategoriesData = {
+            labels: {{ data.common_negative_categories.keys() | list | tojson }},
+            datasets: [{
+                label: 'Negative Feedback Categories',
+                data: {{ data.common_negative_categories.values() | list | tojson }},
+                backgroundColor: '#F44336',
+                borderColor: '#D32F2F',
+                borderWidth: 1
+            }]
+        };
+
+        var negativeCategoriesChart = new Chart(document.getElementById("negativeCategoriesChart"), {
+            type: 'bar',
+            data: negativeCategoriesData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Positive Feedback Categories Chart
+        var positiveCategoriesData = {
+            labels: {{ data.common_positive_categories.keys() | list | tojson }},
+            datasets: [{
+                label: 'Positive Feedback Categories',
+                data: {{ data.common_positive_categories.values() | list | tojson }},
+                backgroundColor: '#4CAF50',
+                borderColor: '#388E3C',
+                borderWidth: 1
+            }]
+        };
+
+        var positiveCategoriesChart = new Chart(document.getElementById("positiveCategoriesChart"), {
+            type: 'bar',
+            data: positiveCategoriesData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
 </body>
 </html>

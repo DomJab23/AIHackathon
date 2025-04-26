@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from datetime import datetime
 import os
+from collections import Counter
 
 
 nltk.download('punkt')
@@ -45,15 +46,38 @@ top_country = df['country'].value_counts().head(1)
 all_countries = df['country'].value_counts()
 
 def get_feedback_analysis():
+    # Read the latest feedback data from the CSV file
+    df = pd.read_csv('feedback.csv')
+
+    # Analyze rating distribution
+    rating_counts = df['rating'].value_counts().to_dict()
+
+    # Categorize feedback (positive, negative, etc.)
+    common_negative_categories = df[df['rating'].str.lower() == 'negative']['category'].value_counts().to_dict()
+    common_positive_categories = df[df['rating'].str.lower() == 'positive']['category'].value_counts().to_dict()
+
+    # Extract common negative words
+    negative_comments = df[df['rating'].str.lower() == 'negative']['comment']
+    negative_words = ' '.join(negative_comments).split()
+    common_neg_words = Counter(negative_words).most_common(10)
+
+    # Extract common positive words (if needed)
+    positive_comments = df[df['rating'].str.lower() == 'positive']['comment']
+    positive_words = ' '.join(positive_comments).split()
+    common_positive_words = Counter(positive_words).most_common(1)
+
+    # Analyze the countries with the most feedback
+    top_country = df['country'].value_counts().head(5).to_dict()
+
+    # All countries and their feedback counts
+    all_countries = df['country'].value_counts().to_dict()
+
     return {
-        "common_negative_categories": common_negative_categories.to_dict(),
-        "common_positive_categories": common_positive_categories.to_dict(),
-        "rating_counts": rating_counts.to_dict(),
-        "common_neg_words": common_neg_words,
-        "common_positive_words": common_positive_words,
-        "top_country": top_country.to_dict(),
-        "all_countries": all_countries.to_dict(),
-        "total_feedback": len(df),
-        "positive_feedback": len(df[df['rating'] == 'positive']),
-        "negative_feedback": len(df[df['rating'] == 'negative']),
+        'rating_counts': rating_counts,
+        'common_negative_categories': common_negative_categories,
+        'common_positive_categories': common_positive_categories,
+        'common_neg_words': common_neg_words,
+        'common_positive_words': common_positive_words,
+        'top_country': top_country,
+        'all_countries': all_countries,
     }

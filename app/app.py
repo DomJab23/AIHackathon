@@ -62,12 +62,38 @@ def get_user_country():
     except Exception as e:
         print(f"Error fetching country: {e}")
         return "Unknown"
+    
+category_suggestions = {
+    "Incorrect Answer": "Improve intent recognition and response matching",
+    "Missing Knowledge": "Expand knowledge base for common questions",
+    "Poor Phrasing": "Improve language generation templates for clarity",
+    "Too Technical": "Simplify technical language for general users",
+    "Not Specific Enough": "Provide more detailed and task-specific responses",
+    "Off-topic": "Improve contextual relevance of answers",
+    "Technical Issue": "Investigate performance/stability of assistant backend",
+    "Helpful": "Maintain strengths in response clarity and usefulness",
+    "Excellent Service": "Encourage consistency in high-quality support",
+    "Thank You": "Leverage positive signals for training data",
+    "Other": "Review manually for unique cases"
+}
 
 @app.route("/analytics")
 def show_analytics():
-    from data_processing.processing import get_feedback_analysis
+    # Call get_feedback_analysis to load the latest feedback data
     analysis = get_feedback_analysis()
-    return render_template("analytics.html", data=analysis)
+
+    backlog = []
+    category_counts = analysis.get('category_counts', {})
+    for category, count in category_counts.items():
+        suggestion = category_suggestions.get(category, "Review manually")
+        backlog.append({
+            "Category": category,
+            "Occurrences": count,
+            "Suggested Action": suggestion
+        })
+    
+    return render_template("analytics.html", data=analysis, backlog=backlog)
+
 
 @app.route("/", methods=["GET"])
 def feedback_form():
