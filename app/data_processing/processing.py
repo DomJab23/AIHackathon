@@ -41,6 +41,8 @@ df['rating'] = df['rating'].str.strip().str.lower()
 # Now perform the categorization with cleaned data
 common_negative_categories = df[df['rating'] == 'negative']['category'].value_counts().head(5)
 common_positive_categories = df[df['rating'] == 'positive']['category'].value_counts().head(5)
+top_country = df['country'].value_counts().head(1)
+all_countries = df['country'].value_counts()
 
 def get_feedback_analysis():
     return {
@@ -48,5 +50,10 @@ def get_feedback_analysis():
         "common_positive_categories": common_positive_categories.to_dict(),
         "rating_counts": rating_counts.to_dict(),
         "common_neg_words": common_neg_words,
-        "common_positive_words": common_positive_words
+        "common_positive_words": common_positive_words,
+        "top_country": top_country.to_dict(),
+        "all_countries": all_countries.to_dict(),
+        "total_feedback": len(df),
+        "positive_feedback": len(df[df['rating'] == 'positive']),
+        "negative_feedback": len(df[df['rating'] == 'negative']),
     }

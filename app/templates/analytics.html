@@ -76,5 +76,20 @@
             <p>No positive words found.</p>
         {% endif %}
     </div>
+    <div class="section">
+        <h2>Country with Most Feedback</h2>
+        {% for country, count in data.top_country.items() %}
+            <p><strong>{{ country }}</strong>: {{ count }} feedback(s)</p>
+        {% endfor %}
+    </div>
+    
+    <div class="section">
+        <h2>All Countries and Feedback Counts</h2>
+        <ul>
+            {% for country, count in data.all_countries.items() %}
+                <li>{{ country }}: {{ count }} feedback(s)</li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
