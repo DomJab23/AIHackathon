@@ -2,22 +2,14 @@ import pandas as pd
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from datetime import datetime
-import os
 from collections import Counter
-
+import os
 
 nltk.download('punkt')
 nltk.download('stopwords')
+
 file_path = "feedback.csv"
 
-# Load CSV
-df = pd.read_csv(file_path)
-
-# Convert timestamp to datetime
-df['timestamp'] = pd.to_datetime(df['timestamp'])
-
-# Tokenize and clean comments
 stop_words = set(stopwords.words('english'))
 
 def clean_text(text):
@@ -26,51 +18,38 @@ def clean_text(text):
     words = word_tokenize(text.lower())
     return [w for w in words if w.isalpha() and w not in stop_words]
 
-df['clean_tokens'] = df['comment'].apply(clean_text)
-
-# Example: Count positive vs. negative
-rating_counts = df['rating'].value_counts()
-
-# Example: Top tokens in negative feedback
-from collections import Counter
-neg_tokens = df[df['rating'] == 'negative']['clean_tokens'].explode()
-common_neg_words = Counter(neg_tokens).most_common(10)
-common_positive_words = Counter(df[df['rating'] == 'positive']['clean_tokens'].explode()).most_common(1)
-# Strip any leading/trailing spaces and convert to lowercase for consistency
-df['rating'] = df['rating'].str.strip().str.lower()
-
-# Now perform the categorization with cleaned data
-common_negative_categories = df[df['rating'] == 'negative']['category'].value_counts().head(5)
-common_positive_categories = df[df['rating'] == 'positive']['category'].value_counts().head(5)
-top_country = df['country'].value_counts().head(1)
-all_countries = df['country'].value_counts()
-
 def get_feedback_analysis():
-    # Read the latest feedback data from the CSV file
-    df = pd.read_csv('feedback.csv')
+    # Load latest feedback
+    if not os.path.exists(file_path):
+        return {}
 
-    # Analyze rating distribution
+    df = pd.read_csv(file_path)
+
+    # Basic cleanup
+    df['rating'] = df['rating'].str.strip().str.lower()
+    df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+    df['clean_tokens'] = df['comment'].apply(clean_text)
+
+    # Ratings breakdown
     rating_counts = df['rating'].value_counts().to_dict()
 
-    # Categorize feedback (positive, negative, etc.)
-    common_negative_categories = df[df['rating'].str.lower() == 'negative']['category'].value_counts().to_dict()
-    common_positive_categories = df[df['rating'].str.lower() == 'positive']['category'].value_counts().to_dict()
+    # Category breakdown
+    common_negative_categories = df[df['rating'] == 'negative']['category'].value_counts().to_dict()
+    common_positive_categories = df[df['rating'] == 'positive']['category'].value_counts().to_dict()
 
-    # Extract common negative words
-    negative_comments = df[df['rating'].str.lower() == 'negative']['comment']
-    negative_words = ' '.join(negative_comments).split()
-    common_neg_words = Counter(negative_words).most_common(10)
+    # Common words in feedback
+    neg_tokens = df[df['rating'] == 'negative']['clean_tokens'].explode()
+    common_neg_words = Counter(neg_tokens).most_common(10)
 
-    # Extract common positive words (if needed)
-    positive_comments = df[df['rating'].str.lower() == 'positive']['comment']
-    positive_words = ' '.join(positive_comments).split()
-    common_positive_words = Counter(positive_words).most_common(1)
+    pos_tokens = df[df['rating'] == 'positive']['clean_tokens'].explode()
+    common_positive_words = Counter(pos_tokens).most_common(5)
 
-    # Analyze the countries with the most feedback
+    # Country breakdown
     top_country = df['country'].value_counts().head(5).to_dict()
-
-    # All countries and their feedback counts
     all_countries = df['country'].value_counts().to_dict()
+
+    # NEW: Category counts for all feedback (used for backlog)
+    category_counts = df['category'].value_counts().to_dict()
 
     return {
         'rating_counts': rating_counts,
@@ -80,4 +59,5 @@ def get_feedback_analysis():
         'common_positive_words': common_positive_words,
         'top_country': top_country,
         'all_countries': all_countries,
+        'category_counts': category_counts,  # <-- added to fix analytics page
     }

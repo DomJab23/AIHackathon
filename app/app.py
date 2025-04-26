@@ -17,19 +17,19 @@ from data_processing.processing import get_feedback_analysis
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Replace with your own secret key
+app.secret_key = 'your_secret_key_here'  # Replace with a real secret key
 
-# Load saved vectorizer
+# Load vectorizer
 with open("ai_feedback_analysis/tfidf_vectorizer.pkl", "rb") as f:
     vectorizer = pickle.load(f)
 
-# Load your feedback sample (used for suggesting fixes)
+# Load feedback sample for suggestion system
 feedback_sample_df = pd.read_csv("ai_feedback_analysis/feedback_sample.csv")
 
-# Process and prepare negative feedback
+# Setup NLTK
 nltk.download('punkt')
 nltk.download('stopwords')
-nltk.download('punkt_tab')
+
 stop_words = set(stopwords.words('english'))
 stemmer = PorterStemmer()
 
@@ -40,11 +40,11 @@ def clean_text(text):
     words = [stemmer.stem(w) for w in words if w.isalpha() and w not in stop_words]
     return " ".join(words)
 
+# Prepare negative feedback
 negative_df = feedback_sample_df[feedback_sample_df['rating'].str.lower().str.strip() == 'negative'].copy()
 negative_df['clean_comment'] = negative_df['comment'].apply(clean_text)
 comment_vectors = vectorizer.transform(negative_df['clean_comment'])
 
-# Suggest a fix based on a new comment
 def suggest_fix(new_comment):
     cleaned = clean_text(new_comment)
     new_vec = vectorizer.transform([cleaned])
@@ -52,17 +52,18 @@ def suggest_fix(new_comment):
     top_index = similarities.argmax()
     return negative_df.iloc[top_index]['botresponse']
 
-# Function to get country based on user's IP
+# Get user country
 def get_user_country():
     try:
-        response = requests.get("http://ipinfo.io")
-        location_data = response.json()
-        country = location_data.get('country', 'Unknown')
-        return country
+        response = requests.get("https://ipinfo.io/json")  # More stable version
+        if response.status_code == 200:
+            location_data = response.json()
+            return location_data.get('country', 'Unknown')
     except Exception as e:
         print(f"Error fetching country: {e}")
-        return "Unknown"
-    
+    return "Unknown"
+
+# Define category suggestions
 category_suggestions = {
     "Incorrect Answer": "Improve intent recognition and response matching",
     "Missing Knowledge": "Expand knowledge base for common questions",
@@ -77,9 +78,9 @@ category_suggestions = {
     "Other": "Review manually for unique cases"
 }
 
+# Analytics route
 @app.route("/analytics")
 def show_analytics():
-    # Call get_feedback_analysis to load the latest feedback data
     analysis = get_feedback_analysis()
 
     backlog = []
@@ -87,14 +88,14 @@ def show_analytics():
     for category, count in category_counts.items():
         suggestion = category_suggestions.get(category, "Review manually")
         backlog.append({
-            "Category": category,
+            "Category": category,  # Uppercase first letter to match template
             "Occurrences": count,
-            "Suggested Action": suggestion
+            "Suggested_Action": suggestion
         })
     
     return render_template("analytics.html", data=analysis, backlog=backlog)
 
-
+# Feedback form route
 @app.route("/", methods=["GET"])
 def feedback_form():
     if 'user_id' not in session:
@@ -103,23 +104,22 @@ def feedback_form():
     
     return render_template("index.html", user_id=session['user_id'], session_id=session['session_id'])
 
+# Submit feedback route
 @app.route("/submit-feedback", methods=["POST"])
 def submit_feedback():
     session['session_id'] = str(uuid.uuid4())
-    current_locale, encoding = locale.getdefaultlocale()
+    current_locale, _ = locale.getdefaultlocale()
     user_country = get_user_country()
 
     rating = request.form.get("rating")
     comment = request.form.get("comment")
-    category = request.form.get("category")
-    if rating and rating.lower().strip() == "negative" and not category:
-        category = "Unspecified"
+    category = request.form.get("category") or "Unspecified"
 
     data = {
         "user_id": request.form.get("user_id"),
         "session_id": session['session_id'],
         "rating": rating,
-        "category": category,  # <-- Use the possibly fixed category here!
+        "category": category,
         "comment": comment,
         "related_query": request.form.get("related_query"),
         "timestamp": datetime.now().isoformat(),
@@ -127,17 +127,18 @@ def submit_feedback():
         "country": user_country,
     }
 
-    # Save to CSV
+    # Save to feedback.csv
     fieldnames = ["user_id", "session_id", "rating", "category", "comment", "related_query", "timestamp", "locale", "country"]
     file_exists = os.path.isfile("feedback.csv")
     is_empty = os.stat("feedback.csv").st_size == 0 if file_exists else True
 
-    with open("feedback.csv", mode="a", newline="") as csvfile:
+    with open("feedback.csv", mode="a", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if is_empty:
             writer.writeheader()
         writer.writerow(data)
-    # Generate bot response
+
+    # Generate response
     if rating.lower().strip() == "negative":
         bot_response = suggest_fix(comment)
     else:
@@ -145,5 +146,6 @@ def submit_feedback():
 
     return render_template("response.html", bot_response=bot_response)
 
+# Run app
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

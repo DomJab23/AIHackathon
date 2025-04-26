@@ -19,7 +19,7 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: flex; /* Flexbox to align data and graph horizontally */
+            display: flex;
             justify-content: space-between;
             align-items: center;
         }
@@ -32,11 +32,11 @@
             padding: 4px 0;
         }
         .graph-container {
-            width: 50%; /* Make the graph container take up half the space */
+            width: 50%;
         }
         canvas {
-            width: 100%% !important; /* Full width of the container */
-            height: 100%% !important; /* Keep aspect ratio */
+            width: 70% !important;
+            height: 100% !important;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -55,7 +55,6 @@
             </ul>
         </div>
         <div class="graph-container">
-            <!-- Graph for Rating Distribution -->
             <canvas id="ratingChart"></canvas>
         </div>
     </div>
@@ -71,7 +70,6 @@
             </ul>
         </div>
         <div class="graph-container">
-            <!-- Graph for Negative Feedback Categories -->
             <canvas id="negativeCategoriesChart"></canvas>
         </div>
     </div>
@@ -87,7 +85,6 @@
             </ul>
         </div>
         <div class="graph-container">
-            <!-- Graph for Positive Feedback Categories -->
             <canvas id="positiveCategoriesChart"></canvas>
         </div>
     </div>
@@ -103,7 +100,6 @@
             </ul>
         </div>
         <div class="graph-container">
-            <!-- Graph for Negative Words -->
             <canvas id="negativeWordsChart"></canvas>
         </div>
     </div>
@@ -119,12 +115,11 @@
             {% endif %}
         </div>
         <div class="graph-container">
-            <!-- Graph for Positive Words -->
             <canvas id="positiveWordsChart"></canvas>
         </div>
     </div>
 
-    <!-- Country with Most Feedback -->
+    <!-- Top Countries -->
     <div class="section">
         <div class="data-container">
             <h2>Country with Most Feedback</h2>
@@ -133,12 +128,11 @@
             {% endfor %}
         </div>
         <div class="graph-container">
-            <!-- Graph for Country with Most Feedback -->
             <canvas id="countryFeedbackChart"></canvas>
         </div>
     </div>
 
-    <!-- All Countries and Feedback Counts -->
+    <!-- All Countries -->
     <div class="section">
         <div class="data-container">
             <h2>All Countries and Feedback Counts</h2>
@@ -149,7 +143,6 @@
             </ul>
         </div>
         <div class="graph-container">
-            <!-- Graph for All Countries -->
             <canvas id="allCountriesChart"></canvas>
         </div>
     </div>
@@ -157,6 +150,7 @@
     <!-- Backlog Suggestions -->
     <div class="section">
         <h2>Backlog Suggestions</h2>
+        {% if backlog %}
         <table>
             <thead>
                 <tr>
@@ -167,87 +161,112 @@
             </thead>
             <tbody>
                 {% for item in backlog %}
-                    <tr {% if item['Occurrences'] > 10 %}class="high-priority"{% endif %}>
-                        <td>{{ item['Category'] }}</td>
-                        <td>{{ item['Occurrences'] }}</td>
-                        <td>{{ item['Suggested Action'] }}</td>
+                    <tr {% if item.Occurrences > 3 %}class="high-priority"{% endif %}>
+                        <td>{{ item.Category }}</td>
+                        <td>{{ item.Occurrences }}</td>
+                        <td>{{ item.Suggested_Action }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <p>No backlog suggestions available.</p>
+        {% endif %}
     </div>
 
-    <!-- Auto-refresh the page every 5 seconds -->
+    <!-- Auto-refresh every 5 seconds -->
     <script>
         setInterval(function() {
             window.location.reload();
-        }, 5000); // 5000 milliseconds = 5 seconds
+        }, 5000);
     </script>
 
-    <!-- Chart.js Data Rendering -->
+    <!-- Chart.js Data -->
     <script>
-        // Rating Distribution Chart
+        // Rating Chart
         var ratingData = {
             labels: {{ data.rating_counts.keys() | list | tojson }},
             datasets: [{
                 label: 'Rating Distribution',
                 data: {{ data.rating_counts.values() | list | tojson }},
                 backgroundColor: ['#4CAF50', '#FF9800', '#F44336'],
-                borderColor: ['#388E3C', '#F57C00', '#D32F2F'],
                 borderWidth: 1
             }]
         };
+        new Chart(document.getElementById("ratingChart"), { type: 'pie', data: ratingData });
 
-        var ratingChart = new Chart(document.getElementById("ratingChart"), {
-            type: 'pie',
-            data: ratingData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // Negative Feedback Categories Chart
+        // Negative Categories
         var negativeCategoriesData = {
             labels: {{ data.common_negative_categories.keys() | list | tojson }},
             datasets: [{
-                label: 'Negative Feedback Categories',
+                label: 'Negative Feedback',
                 data: {{ data.common_negative_categories.values() | list | tojson }},
                 backgroundColor: '#F44336',
-                borderColor: '#D32F2F',
                 borderWidth: 1
             }]
         };
+        new Chart(document.getElementById("negativeCategoriesChart"), { type: 'bar', data: negativeCategoriesData });
 
-        var negativeCategoriesChart = new Chart(document.getElementById("negativeCategoriesChart"), {
-            type: 'bar',
-            data: negativeCategoriesData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // Positive Feedback Categories Chart
+        // Positive Categories
         var positiveCategoriesData = {
             labels: {{ data.common_positive_categories.keys() | list | tojson }},
             datasets: [{
-                label: 'Positive Feedback Categories',
+                label: 'Positive Feedback',
                 data: {{ data.common_positive_categories.values() | list | tojson }},
                 backgroundColor: '#4CAF50',
-                borderColor: '#388E3C',
                 borderWidth: 1
             }]
         };
+        new Chart(document.getElementById("positiveCategoriesChart"), { type: 'bar', data: positiveCategoriesData });
 
-        var positiveCategoriesChart = new Chart(document.getElementById("positiveCategoriesChart"), {
-            type: 'bar',
-            data: positiveCategoriesData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+        // Negative Words
+        var negativeWordsData = {
+            labels: {{ data.common_neg_words | map(attribute=0) | list | tojson }},
+            datasets: [{
+                label: 'Negative Words',
+                data: {{ data.common_neg_words | map(attribute=1) | list | tojson }},
+                backgroundColor: '#E91E63',
+                borderWidth: 1
+            }]
+        };
+        new Chart(document.getElementById("negativeWordsChart"), { type: 'bar', data: negativeWordsData });
+
+        // Positive Words
+        var positiveWordsData = {
+            labels: {{ data.common_positive_words | map(attribute=0) | list | tojson }},
+            datasets: [{
+                label: 'Positive Words',
+                data: {{ data.common_positive_words | map(attribute=1) | list | tojson }},
+                backgroundColor: '#00BCD4',
+                borderWidth: 1
+            }]
+        };
+        new Chart(document.getElementById("positiveWordsChart"), { type: 'bar', data: positiveWordsData });
+
+        // Top Country Feedback
+        var countryFeedbackData = {
+            labels: {{ data.top_country.keys() | list | tojson }},
+            datasets: [{
+                label: 'Top Countries',
+                data: {{ data.top_country.values() | list | tojson }},
+                backgroundColor: '#2196F3',
+                borderWidth: 1
+            }]
+        };
+        new Chart(document.getElementById("countryFeedbackChart"), { type: 'bar', data: countryFeedbackData });
+
+        // All Countries
+        var allCountriesData = {
+            labels: {{ data.all_countries.keys() | list | tojson }},
+            datasets: [{
+                label: 'All Countries',
+                data: {{ data.all_countries.values() | list | tojson }},
+                backgroundColor: '#9C27B0',
+                borderWidth: 1
+            }]
+        };
+        new Chart(document.getElementById("allCountriesChart"), { type: 'bar', data: allCountriesData });
     </script>
+
 </body>
 </html>
