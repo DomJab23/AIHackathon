@@ -10,13 +10,69 @@ nltk.download('stopwords')
 
 file_path = "feedback.csv"
 
+extra_stopwords = {'ok', 'okay', 'sure', 'yeah', 'uh', 'hmm', 'hi', 'hello', 'thanks', 'thank'}
+stop_words = set(stopwords.words('english')).union(extra_stopwords)
+
+
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk import pos_tag
+
+nltk.download('averaged_perceptron_tagger')
+nltk.download('averaged_perceptron_tagger_eng')
+nltk.download('punkt')
+nltk.download('stopwords')
+
+
 stop_words = set(stopwords.words('english'))
 
 def clean_text(text):
     if pd.isnull(text):
         return []
+
     words = word_tokenize(text.lower())
-    return [w for w in words if w.isalpha() and w not in stop_words]
+    tagged_words = pos_tag(words)
+
+    filtered_phrases = []
+    i = 0
+    while i < len(tagged_words):
+        word, tag = tagged_words[i]
+
+        # Pomijamy niealfabetyczne słowa i stopwords
+        if not word.isalpha() or word in stop_words:
+            i += 1
+            continue
+
+        phrase = [word]
+
+        # Próbujemy stworzyć 2- lub 3-wyrazowe frazy
+        if i + 1 < len(tagged_words):
+            next_word, next_tag = tagged_words[i+1]
+            if next_word.isalpha() and next_word not in stop_words:
+                # 2-wyrazowa fraza
+                phrase.append(next_word)
+
+                # Sprawdźmy czy można jeszcze dodać trzecie słowo
+                if i + 2 < len(tagged_words):
+                    third_word, third_tag = tagged_words[i+2]
+                    if third_word.isalpha() and third_word not in stop_words:
+                        # 3-wyrazowa fraza
+                        phrase.append(third_word)
+                        filtered_phrases.append('_'.join(phrase))
+                        i += 3
+                        continue
+
+                filtered_phrases.append('_'.join(phrase))
+                i += 2
+                continue
+
+        # Jeśli nie udało się połączyć, dodaj pojedyncze znaczące słowo
+        filtered_phrases.append(word)
+        i += 1
+
+    return filtered_phrases
+
 
 def get_feedback_analysis():
     # Load latest feedback
