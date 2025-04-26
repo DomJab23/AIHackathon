@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Danfoss Chatbot Feedback</title>
   <style>
+    /* Twój cały styl zostaje bez zmian */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f0f2f5;
@@ -15,7 +16,6 @@
       align-items: flex-start;
       min-height: 100vh;
     }
-
     .chatbot-container {
       background-color: #fff;
       width: 100%;
@@ -27,13 +27,11 @@
       flex-direction: column;
       gap: 20px;
     }
-
     .logo {
       width: 140px;
       margin: 0 auto;
       display: block;
     }
-
     .chat-bubble {
       background-color: #f7f7f7;
       padding: 16px 20px;
@@ -42,30 +40,25 @@
       max-width: 90%;
       align-self: flex-start;
     }
-
     .form-group {
       background-color: #f7f7f7;
       border-radius: 20px;
       padding: 16px;
       margin-bottom: 10px;
     }
-
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
       color: #333;
     }
-
     input[type="radio"] {
       margin-right: 8px;
     }
-
     input[type="radio"] + label {
       margin-right: 20px;
       font-weight: normal;
     }
-
     select,
     textarea {
       width: 100%;
@@ -74,12 +67,10 @@
       border: 1px solid #ccc;
       font-size: 15px;
     }
-
     textarea {
       resize: vertical;
       min-height: 80px;
     }
-
     .submit-btn {
       background-color: #d5001c;
       color: white;
@@ -90,7 +81,6 @@
       cursor: pointer;
       align-self: flex-end;
     }
-
     .submit-btn:hover {
       background-color: #b00017;
     }
@@ -116,26 +106,10 @@
         <label for="negative">Negative</label>
       </div>
 
-      <div class="form-group" id="positiveCategories" style="display: none;">
-        <label for="positiveCategory">Category (Positive):</label>
-        <select id="positiveCategory" name="category">
-          <option value="">Select Category</option>
-          <option value="Helpful">Helpful</option>
-          <option value="Excellent Service">Excellent Service</option>
-          <option value="Thank You">Thank You</option>
-        </select>
-      </div>
-      
-      <div class="form-group" id="negativeCategories" style="display: none;">
-        <label for="negativeCategory">Category (Negative):</label>
-        <select id="negativeCategory" name="category">
-          <option value="">Select Category</option>
-          <option value="Poor Phrasing">Poor Phrasing</option>
-          <option value="Off-topic">Off-topic</option>
-          <option value="Not Specific Enough">Not Specific Enough</option>
-          <option value="Incorrect Answer">Incorrect Answer</option>
-          <option value="Missing Knowledge">Missing Knowledge</option>
-          <option value="Too Technical">Too Technical</option>
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+          <option value="">Select a category</option>
         </select>
       </div>
 
@@ -147,20 +121,43 @@
       <button type="submit" class="submit-btn">Send</button>
     </form>
   </div>
+
   <script>
+    const positiveOptions = [
+      { value: "Helpful", label: "Helpful" },
+      { value: "Excellent Service", label: "Excellent Service" },
+      { value: "Thank You", label: "Thank You" }
+    ];
+
+    const negativeOptions = [
+      { value: "Poor Phrasing", label: "Poor Phrasing" },
+      { value: "Off-topic", label: "Off-topic" },
+      { value: "Not Specific Enough", label: "Not Specific Enough" },
+      { value: "Incorrect Answer", label: "Incorrect Answer" },
+      { value: "Missing Knowledge", label: "Missing Knowledge" },
+      { value: "Too Technical", label: "Too Technical" }
+    ];
+
     function showCategories(rating) {
-      document.getElementById("positiveCategories").style.display = "none";
-      document.getElementById("negativeCategories").style.display = "none";
-      document.getElementById("positiveCategory").required = false;
-      document.getElementById("negativeCategory").required = false;
-  
+      const categorySelect = document.getElementById("category");
+
+      // Wyczyszczamy wszystkie opcje
+      categorySelect.innerHTML = '<option value="">Select a category</option>';
+
+      // W zależności od oceny wypełniamy opcje
+      let options = [];
       if (rating === "positive") {
-        document.getElementById("positiveCategories").style.display = "block";
-        document.getElementById("positiveCategory").required = true;
+        options = positiveOptions;
       } else if (rating === "negative") {
-        document.getElementById("negativeCategories").style.display = "block";
-        document.getElementById("negativeCategory").required = true;
+        options = negativeOptions;
       }
+
+      options.forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        option.textContent = opt.label;
+        categorySelect.appendChild(option);
+      });
     }
   </script>
 </body>
