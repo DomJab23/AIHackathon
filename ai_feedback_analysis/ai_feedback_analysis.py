@@ -90,3 +90,26 @@ print(backlog_df)
 # --- Save Outputs ---
 backlog_df.to_csv("ai_feedback_backlog.csv", index=False)
 df.to_csv("classified_feedback.csv", index=False)
+from topic_extraction import get_conversation_topic
+
+backlog = []
+
+for feedback in feedback_list:
+    if feedback['category'] is None and feedback['comment'] is None:
+        # This feedback only had thumbs up/down, no category or comment
+        conversation_text = feedback['conversation']  # You must have stored the chat
+        topic = get_conversation_topic(conversation_text)
+
+        backlog.append({
+            "Category": "UNSPECIFIED",
+            "Occurrences": 1,  # or however you are counting
+            "Suggested_Action": "Review manually",
+            "Topics": [topic]
+        })
+    else:
+        # Normal handling for other feedbacks
+        backlog.append({
+            "Category": feedback['category'],
+            "Occurrences": feedback['count'],
+            "Suggested_Action": "Review manually"
+        })

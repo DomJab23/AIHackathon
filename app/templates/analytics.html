@@ -313,13 +313,22 @@ function toggleNegativeWords() {
                 <td style="padding: 10px 20px; border-bottom: 1px solid #ddd;">{{ item.Occurrences }}</td>
                 <td style="padding: 10px 20px; border-bottom: 1px solid #ddd;">
                     <span>{{ item.Suggested_Action }}</span>
+                
+                    {% if item.Topics %}
+                        <ul style="margin-top: 8px; padding-left: 16px;">
+                            {% for topic in item.Topics %}
+                                <li>{{ topic }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                
                     {% if item.Suggested_Action == "Review manually" %}
                         <form action="/review-comments" method="GET" style="display:inline;">
                             <input type="hidden" name="category" value="{{ item.Category }}">
                             <button type="submit" style="padding: 6px 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">See Comments</button>
                         </form>
                     {% endif %}
-                </td>
+                </td>                
             </tr>
             {% endfor %}
         </tbody>
