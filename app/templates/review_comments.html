@@ -1,22 +1,76 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comments for {{ category }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F8F9FA;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+        }
+        h1 {
+            color: #003B5C;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background-color: white;
+            border: 1px solid #E0E0E0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        p {
+            font-size: 1rem;
+            color: #7F8C8D;
+        }
+        a {
+            display: inline-block;
+            background-color: #d5001c;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #b00017;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Comments for Category: "{{ category }}"</h1>
-    
-    {% if comments %}
-        <ul>
-            {% for comment in comments %}
-                <li>{{ comment }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No comments found for this category.</p>
-    {% endif %}
-    
-    <br>
-    <a href="/analytics">← Back to Analytics</a>
+
+    <div class="container">
+        <h1>Comments for Category: "{{ category }}"</h1>
+        
+        {% if comments %}
+            <ul>
+                {% for comment in comments %}
+                    <li>{{ comment }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No comments found for this category.</p>
+        {% endif %}
+        
+        <br>
+        <a href="/analytics">← Back to Analytics</a>
+    </div>
+
 </body>
 </html>
