@@ -2,7 +2,7 @@ import sys
 import os
 import csv
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 import uuid
 import locale
 import requests
@@ -157,13 +157,8 @@ def submit_feedback():
             writer.writeheader()
         writer.writerow(data)
 
-    # Generate response
-    if rating == "negative":
-        bot_response = suggest_fix(comment)
-    else:
-        bot_response = "Thank you for your feedback! We're glad you found the information helpful."
-
-    return render_template("response.html", bot_response=bot_response)
+    # Instead of rendering anything, just REDIRECT back to simple feedback page
+    return redirect(url_for('quick_feedback'))
 
 # Run app
 if __name__ == "__main__":
