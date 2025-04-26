@@ -122,6 +122,39 @@ def review_comments():
     
     return render_template("review_comments.html", category=category, comments=comments)
 
+from collections import Counter
+
+# Funkcja do liczenia feedbacków dla każdego użytkownika
+def get_user_feedback_count():
+    feedback_count = Counter()
+
+    # Sprawdź, czy plik istnieje
+    if os.path.exists("feedback.csv"):
+        # Wczytaj dane z pliku CSV
+        df = pd.read_csv("feedback.csv")
+        
+        # Zliczaj wystąpienia user_id
+        feedback_count.update(df['user_id'])
+    
+    return feedback_count
+
+@app.route("/top-users", methods=["GET"])
+def top_users():
+    # Zlicz feedbacki użytkowników
+    feedback_count = get_user_feedback_count()
+
+    # Posortuj użytkowników według liczby feedbacków i weź top 10
+    top_users = feedback_count.most_common(10)
+
+    # Przygotuj dane do wyświetlenia w szablonie
+    top_users_data = [
+        {"user_id": user_id, "feedback_count": count}
+        for user_id, count in top_users
+    ]
+
+    return render_template("top_users.html", top_users=top_users_data)
+
+
 
 # Submit feedback route
 @app.route("/submit-feedback", methods=["POST"])

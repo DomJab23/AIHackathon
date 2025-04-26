@@ -58,6 +58,90 @@
             <canvas id="ratingChart"></canvas>
         </div>
     </div>
+
+
+<!-- Top 10 Most Active Users -->
+<div class="section">
+    <div class="data-container">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin: 0;">Top 10 Most Active Users</h2>
+
+            {% if data.top_users|length > 5 %}
+            <button id="toggleUsersButton" onclick="toggleUsers()" style="padding: 8px 16px; background-color: #e53935; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Show All
+            </button>
+            {% endif %}
+        </div>
+
+        <ul id="usersList">
+            {% for user, count in data.top_users %}
+                <li class="{% if loop.index > 5 %}hidden-user{% endif %}">
+                    {{ user }}: {{ count }} feedback(s)
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="graph-container">
+        <canvas id="topUsersChart"></canvas>
+    </div>
+</div>
+
+<script>
+    // Top Users Chart
+    const topUsersLabels = {{ data.top_users | map(attribute=0) | list | tojson }};
+    const topUsersCounts = {{ data.top_users | map(attribute=1) | list | tojson }};
+
+    const topUsersData = {
+        labels: topUsersLabels,
+        datasets: [{
+            label: 'Feedbacks Count',
+            data: topUsersCounts,
+            backgroundColor: 'rgba(255, 87, 34, 0.7)',
+            borderColor: 'rgba(255, 87, 34, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    const topUsersConfig = {
+        type: 'bar',
+        data: topUsersData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    new Chart(
+        document.getElementById('topUsersChart'),
+        topUsersConfig
+    );
+
+    // Toggle function for showing all users
+    function toggleUsers() {
+        const hiddenUsers = document.querySelectorAll('.hidden-user');
+        const button = document.getElementById('toggleUsersButton');
+
+        if (hiddenUsers[0].style.display === 'none' || hiddenUsers[0].style.display === '') {
+            hiddenUsers.forEach(user => {
+                user.style.display = 'list-item';
+            });
+            button.textContent = 'Show Top 5';
+        } else {
+            hiddenUsers.forEach(user => {
+                user.style.display = 'none';
+            });
+            button.textContent = 'Show All';
+        }
+    }
+</script>
+
+
+
 <!-- Top Negative Feedback Categories -->
 <div class="section">
     <div class="data-container">
@@ -279,9 +363,6 @@ function toggleNegativeWords() {
             }
         }
     </script>
-    
-    
-
 
  <!-- Backlog Suggestions -->
 <div class="section" style="background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
