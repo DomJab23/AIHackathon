@@ -110,3 +110,6 @@ user_id,session_id,rating,category,comment,related_query,timestamp,locale,countr
 42413211-7c35-4bbe-a51a-73ddd14eefa5,t0u1v2w3-x4y5-z6a7-b8c9-d0e1f2g3h4i5,negative,Missing Knowledge,You didn't address my full question,,2025-04-26T15:54:45.012345,de_DE,DE
 
 4147fad2-da7f-4e79-b5cf-a9b672fd2920,381d989b-01e9-4409-9d2a-6888d843d9eb,,Helpful,Information about fridges was very helpful,,2025-04-27T08:32:22.505638,en_US,IT
+4147fad2-da7f-4e79-b5cf-a9b672fd2920,4c53e5e0-d809-4fc7-91a7-409b7912a3a3,negative,Unspecified,,,2025-04-27T08:40:38.263723,en_US,IT
+4147fad2-da7f-4e79-b5cf-a9b672fd2920,d40dd9ab-6630-4099-ab21-6ecf8fd1f621,,Missing Knowledge,My answer was lacking knowledge,,2025-04-27T08:41:53.049837,en_US,IT
+4147fad2-da7f-4e79-b5cf-a9b672fd2920,327e01ce-e04e-4a0d-8e00-3636fe492ba2,negative,Unspecified,,,2025-04-27T08:46:26.243465,en_US,IT
