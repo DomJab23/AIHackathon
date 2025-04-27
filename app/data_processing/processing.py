@@ -12,7 +12,8 @@ nltk.download('stopwords')
 
 file_path = "feedback.csv"
 
-extra_stopwords = {'okay', 'sure', 'yeah', 'hmm', 'hello', 'thanks', 'thank', 'yup', 'nah',
+extra_stopwords = {'ok', 'okay', 'sure', 'yeah', 'uh', 'hmm', 'hi', 'hello', 'thanks', 'thank',
+                   'okay', 'sure', 'yeah', 'hmm', 'hello', 'thanks', 'thank', 'yup', 'nah',
     'hmm', 'huh', 'lol', 'lmao', 'okay',
     'yes', 'maybe', 'idk', 'hahaha', 'haha', 'heh', 'meh',
     'huh', 'hmmm', 'hmm', 'huhuh', 'yup', 'nope', 'yeah',
@@ -20,13 +21,7 @@ extra_stopwords = {'okay', 'sure', 'yeah', 'hmm', 'hello', 'thanks', 'thank', 'y
     'hello', 'yo', 'sup', 'hey', 'thx',
     'pls', 'plz', 'k', 'kk', 'brb', 'gtg', 'btw', 'idc',
     'ikr', 'tbh', 'bff', 'rofl'
-}
-
-special_combine_words = {
-    "lot", "way", "bit", "kind", "sort", "piece", "deal", "load", 
-    "bunch", "heap", "ton", "touch", "batch", "wrong"  # Dodanie "wrong"
-}
-
+    'i'}
 stop_words = set(stopwords.words('english')).union(extra_stopwords)
 
 def is_garbage_word(word):
@@ -38,53 +33,63 @@ def is_garbage_word(word):
         return True
     return False
 
-
 def clean_text(text):
     if pd.isnull(text):
         return []
 
     words = word_tokenize(text.lower())
-    tagged_words = pos_tag(words)
+    stop_words = set(stopwords.words('english'))
+    
+    important_single = {
+        'not', 'no', 'never', 'cannot', "can't", "didn't", "won't", "shouldn't", 
+        "wouldn't", "couldn't", 'many', 'few', 'some', 'several', 'lot', 'lots', 
+        'plenty', 'little', 'much', 'too', 'wrong'
+    }
 
-    filtered_phrases = []
+    important_phrases = [
+        ('a', 'lot', 'of'),
+        ('lot', 'of'),
+        ('plenty', 'of'),
+        ('a', 'few'),
+        ('not','what','i')
+    ]
+
+    filtered_words = []
     i = 0
-    while i < len(tagged_words):
-        word, tag = tagged_words[i]
+    while i < len(words):
+        word = words[i]
 
-        # Pomijamy niealfabetyczne słowa i stopwords
-        if not word.isalpha() or word in stop_words or is_garbage_word(word):
-            i += 1
+        # Sprawdzanie czy aktualne słowa tworzą ważną frazę
+        matched_phrase = False
+        for phrase in important_phrases:
+            if words[i:i+len(phrase)] == list(phrase):
+                # Łączymy frazę (np. a + lot + of + next_word)
+                next_word_idx = i + len(phrase)
+                if next_word_idx < len(words) and words[next_word_idx].isalpha():
+                    combined = f"{phrase[-1]}_{words[next_word_idx]}"
+                    filtered_words.append(combined)
+                    i = next_word_idx + 1
+                    matched_phrase = True
+                    break
+
+        if matched_phrase:
             continue
 
-        phrase = [word]
+        # Łączenie pojedynczych ważnych słów z następnym słowem
+        if word in important_single and i + 1 < len(words) and words[i+1].isalpha():
+            combined = f"{word}_{words[i+1]}"
+            filtered_words.append(combined)
+            i += 2
+            continue
 
-        # Sprawdzamy, czy to specjalne słowo do połączenia
-        if word == "lot" and (i + 1) < len(tagged_words) and tagged_words[i+1][0] == "of":
-            # Zbieramy całą frazę "lot of" plus to, co za nią następuje
-            if i + 2 < len(tagged_words):
-                next_word = tagged_words[i+2][0]
-                if next_word.isalpha() and next_word not in stop_words:
-                    # Tworzymy całą frazę
-                    phrase = [f"lot_of_{next_word}"]
-                    filtered_phrases.append('_'.join(phrase))
-                    i += 3  # Zwiększamy indeks o 3, bo dodaliśmy frazę "lot of"
-                    continue
+        # Normalne pojedyncze słowa
+        if word.isalpha() and word not in stop_words and not is_garbage_word(word):
+            filtered_words.append(word)
 
-        # Sprawdzamy, czy "wrong" jest przed kolejnym słowem
-        if word == "wrong" and (i + 1) < len(tagged_words):
-            next_word = tagged_words[i+1][0]
-            if next_word.isalpha() and next_word not in stop_words:
-                # Tworzymy frazę "wrong_" plus następne słowo
-                phrase = [f"wrong_{next_word}"]
-                filtered_phrases.append('_'.join(phrase))
-                i += 2  # Zwiększamy indeks o 2, bo dodaliśmy frazę "wrong"
-                continue
-
-        # Jeśli nie udało się połączyć, dodajemy pojedyncze słowo
-        filtered_phrases.append(word)
         i += 1
 
-    return filtered_phrases
+    return filtered_words
+
 
 
 def get_feedback_analysis():

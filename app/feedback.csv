@@ -108,8 +108,43 @@ user_id,session_id,rating,category,comment,related_query,timestamp,locale,countr
 42413211-7c35-4bbe-a51a-73ddd14eefa5,r8s9t0u1-v2w3-x4y5-z6a7-b8c9d0e1f2g3,positive,Excellent Service,Super helpful and fast responses,,2025-04-26T15:52:15.890123,en_CA,CA
 42413211-7c35-4bbe-a51a-73ddd14eefa5,s9t0u1v2-w3x4-y5z6-a7b8-c9d0e1f2g3h4,positive,Thank You,Thanks for your quick help!,,2025-04-26T15:53:30.901234,en_AU,AU
 42413211-7c35-4bbe-a51a-73ddd14eefa5,t0u1v2w3-x4y5-z6a7-b8c9-d0e1f2g3h4i5,negative,Missing Knowledge,You didn't address my full question,,2025-04-26T15:54:45.012345,de_DE,DE
-
 4147fad2-da7f-4e79-b5cf-a9b672fd2920,381d989b-01e9-4409-9d2a-6888d843d9eb,,Helpful,Information about fridges was very helpful,,2025-04-27T08:32:22.505638,en_US,IT
 4147fad2-da7f-4e79-b5cf-a9b672fd2920,4c53e5e0-d809-4fc7-91a7-409b7912a3a3,negative,Unspecified,,,2025-04-27T08:40:38.263723,en_US,IT
 4147fad2-da7f-4e79-b5cf-a9b672fd2920,d40dd9ab-6630-4099-ab21-6ecf8fd1f621,,Missing Knowledge,My answer was lacking knowledge,,2025-04-27T08:41:53.049837,en_US,IT
 4147fad2-da7f-4e79-b5cf-a9b672fd2920,327e01ce-e04e-4a0d-8e00-3636fe492ba2,negative,Unspecified,,,2025-04-27T08:46:26.243465,en_US,IT
+42413211-7c35-4bbe-a51a-73ddd14eefa5,m3n4o5p6-q7r8-s9t0-u1v2-w3x4y5z6a7b8,negative,Poor Phrasing,The instructions were very confusing,,2025-04-26T15:46:00.345678,es_ES,ES
+42413211-7c35-4bbe-a51a-73ddd14eefa5,m3n4o5p6-q7r8-s9t0-u1v2-w3x4y5z6a7b8,negative,Poor Phrasing,The instructions were very confusing,,2025-04-26T15:46:00.345678,es_ES,ES
+42413211-7c35-4bbe-a51a-73ddd14eefa5,m3n4o5p6-q7r8-s9t0-u1v2-w3x4y5z6a7b8,negative,Poor Phrasing,The instructions were very confusing,,2025-04-26T15:46:00.345678,es_ES,ES
+42413211-7c35-4bbe-a51a-73ddd14eefa5,fef323ca-20bb-4110-939b-0372b1331ab1,negative,Incorrect Answer,The provided info was not what I needed.,,2025-04-26T14:27:40.678901,en_US,PL
+6f13b3a8-b16b-44cf-b878-9235d24d2adf,a1f30123-5e13-4c95-b137-1b65df78502e,positive,Helpful,Thanks a lot for the quick response!,,2025-04-27T12:01:05.123456,en_US,US
+7d414832-bb42-4c8d-b879-72be2d416de0,acbd1234-5def-6789-0abc-ef1234567890,positive,Excellent Service,Super professional and fast!, ,2025-04-27T12:02:10.654321,en_US,CA
+1a24be2f-73b5-4232-bc1d-c03f2131bada,b3214abc-1234-5678-abcd-123456abcdef,positive,Thank You,Really appreciate your support!,,2025-04-27T12:03:12.789123,en_US,GB
+2348dfde-3e2b-44f2-aef7-345edf12ab34,a5432cba-1ab2-34cd-56ef-abcdef123456,positive,Helpful,This was a lot of help, thank you.,,2025-04-27T12:04:15.321987,en_US,AU
+3abce432-5bd2-493f-8bb4-1f45a3b12df7,bac23dfa-1234-4321-bacd-987654321fed,positive,Excellent Service,Could not be happier!,,2025-04-27T12:05:17.987654,en_US,IN
+4bcfeacd-2398-4721-bbce-435fb32cd345,a123b456-cd78-90ef-12ab-cdef34567890,positive,Thank You,Awesome help as always.,,2025-04-27T12:06:20.111213,en_US,DE
+59cdef12-a3b4-4a2b-bdcd-2345cf34bb23,b4321dca-0abc-1234-ef56-abcdef789012,positive,Helpful,Very clear instructions!,,2025-04-27T12:07:22.555444,en_US,PL
+62bf1dea-2398-431a-9bcd-78de12ab34cf,a1bc23de-4f56-7a8b-cdef-1234ab567890,positive,Excellent Service,Absolutely perfect!, ,2025-04-27T12:08:24.999888,en_US,FR
+7dfbe912-1b23-4dc8-9bad-432acb2dea45,b1ca234d-5678-abcd-1234-abcd1234abcd,positive,Thank You,Thank you so much for the assistance!,,2025-04-27T12:09:27.333222,en_US,ES
+8de43cab-1bd2-4eac-8b3d-24cdf3a2134e,a12b3c4d-5e6f-7a8b-9cde-f123456789ab,positive,Helpful,Simple and helpful advice.,,2025-04-27T12:10:30.777111,en_US,NL
+c1e4bdea-12b3-4c5d-a1bd-c2a34b12d3fe,b3214fed-6789-0abc-def1-23456789abcd,negative,Poor Phrasing,Kind of confusing, please simplify.,,2025-04-27T12:11:32.112233,en_US,US
+f2d4ba13-9f3b-48bd-bcfe-cad3243bcadf,a2341bcf-5a67-8b9c-de01-234abc123456,negative,Off-topic,Not related to my question.,,2025-04-27T12:12:34.445566,en_US,GB
+e3ab41dc-1c23-423d-8bad-43bcad2345de,b4c3a2bd-7a8b-9cde-01ab-abcdef789123,negative,Not Specific Enough,The answer felt a lot of vague ideas.,,2025-04-27T12:13:36.778899,en_US,CA
+b4ca3ebd-2d34-4cfb-9bad-543bc2a1d3ce,a3bd4c2e-9cde-0abc-def1-234abcd56789,negative,Incorrect Answer,Wrong info regarding my query.,,2025-04-27T12:14:38.112244,en_US,AU
+d5e4cbd2-12bc-4c3d-9a1b-d23ab45cdef2,b3c4a2ed-1234-5678-9abc-def12345abcd,negative,Missing Knowledge,It looks like a lot of missing data.,,2025-04-27T12:15:40.445566,en_US,PL
+e6fb2ad3-13bd-42ca-9cde-4bac321ab3ed,a23bcde4-5a67-8b9c-0abc-def123456789,negative,Too Technical,Kind of too complicated to understand.,,2025-04-27T12:16:42.778899,en_US,IN
+f7acb1ed-23bd-4eab-9bca-5dc3b4a2cdfe,bac2d34a-1bcd-34ef-56ab-cdef123456ab,negative,Incorrect Answer,Wrong suggestion for my case.,,2025-04-27T12:17:44.112233,en_US,DE
+8da23cab-24bd-4dac-8bac-6dcb342bcdef,a23bc1d2-9abc-def0-1234-abcdef567890,negative,Missing Knowledge,A lot of essential information was missing.,,2025-04-27T12:18:46.445566,en_US,FR
+9c1de43a-13bd-4dcb-9bce-74bd321cabde,b234a1cd-5678-abcd-0123-cdef789012ab,negative,Poor Phrasing,Strange phrasing made it hard to follow.,,2025-04-27T12:19:48.778899,en_US,NL
+ad13cab4-5bd2-4dac-8bac-8dbcd234cabd,a2bc34ed-1abc-9def-1234-abcd123456ef,positive,Thank You,Kind of you to help me so fast!,,2025-04-27T12:20:50.111213,en_US,ES
+ab134ec2-45bd-4acd-9cbe-1d234cd5cbae,b3ad4cde-5a67-9abc-0def-abcdef678901,positive,Helpful,This explanation helped a lot.,,2025-04-27T12:21:52.444312,en_US,US
+cd5ab3f2-23bd-4edc-9bac-9dbac1a2ebcd,a1c2bd34-9abc-def1-2345-cdef6789abcd,positive,Excellent Service,Excellent guidance overall!, ,2025-04-27T12:22:54.777456,en_US,PL
+bc31a2ed-5acb-4dac-9bce-0cbda1234bce,bac32a1d-1234-5678-9abc-def123456abf,positive,Thank You,Thank you for clearing up my doubts.,,2025-04-27T12:23:56.999654,en_US,CA
+bd32ec1d-1bc3-4dac-9ebc-1cbad123ebcf,a1234bcd-0abc-def1-2345-abcdef678901,positive,Helpful,The support made a lot of difference.,,2025-04-27T12:24:59.111213,en_US,IN
+be3fc2da-2bcd-4cad-9ebc-2cbad134dcfe,b321acd4-5ef6-7890-abcd-abcdef123456,negative,Too Technical,Kind of too technical for non-experts.,,2025-04-27T12:26:01.444888,en_US,GB
+cae2b3ad-1bd4-4cae-8bac-3dbc4213cdef,a2bc13de-9abc-0def-1234-cdef6789abcd,negative,Off-topic,The answer was completely wrong.,,2025-04-27T12:27:03.778999,en_US,US
+da4b2e3c-3bd1-4acd-9bce-4dabc321cbef,b2341dac-5678-9abc-0def-abcdef12345c,negative,Not Specific Enough,A lot of generalizations, not helpful.,,2025-04-27T12:28:05.112233,en_US,FR
+de1bc3a4-1bcd-4dca-8bca-5dcab342cbde,a1bc2d34-9abc-def1-2345-cdef6789abcd,negative,Incorrect Answer,Wrong facts presented in the reply.,,2025-04-27T12:29:07.445566,en_US,DE
+ee4fbc2a-23bc-4dae-9cbe-6dbc432abcd3,b432a1cd-1234-5678-90ab-cdef567890ab,negative,Poor Phrasing,The explanation was a lot of messy.,,2025-04-27T12:30:09.778899,en_US,NL
+ec1db4ea-12bc-4acb-9ebd-7cbad312cdfe,a23bc1de-5a67-8b9c-0abc-def123456789,positive,Helpful,Fast and super helpful!,,2025-04-27T12:31:12.112213,en_US,PL
+fb34da12-13bd-4dac-9bce-8cbad321debc,b1acd234-5678-9abc-0def-cdef12345678,positive,Excellent Service,Excellent and thorough support.,,2025-04-27T12:32:14.445678,en_US,CA
+fbc12dae-2bd1-4dac-9cbe-9dbac432efcd,a1c2d3bc-5a67-8b9c-def1-23456789abcd,positive,Thank You,Thank you, this helped a lot!, ,2025-04-27T12:33:16.778912,en_US,IN
