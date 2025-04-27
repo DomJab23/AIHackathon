@@ -8,7 +8,7 @@
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background-color: #ffffff;   
+      background-color: #ffffff;
     }
 
     .header {
@@ -19,7 +19,7 @@
       border-bottom: 1px solid #ddd;
       position: relative;
       width: 100%;
-      height: 80px; 
+      height: 80px;
       box-sizing: border-box;
     }
 
@@ -30,7 +30,7 @@
     }
 
     .header-left img {
-      height: 50px; 
+      height: 50px;
     }
 
     .header-center {
@@ -39,14 +39,14 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 20px;
-      white-space: nowrap; 
-      pointer-events: none; 
+      white-space: nowrap;
+      pointer-events: none;
     }
 
     .header-right {
       font-size: 24px;
       cursor: pointer;
-      z-index: 2; 
+      z-index: 2;
       background: transparent;
       border: none;
     }
@@ -106,6 +106,39 @@
     .submit-btn:hover {
       background-color: #b00017;
     }
+
+    /* Modal Styling */
+    #thankYouModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    #thankYouModal .modal-content {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 400px;
+      width: 80%;
+    }
+
+    #thankYouModal button {
+      margin-top: 20px;
+      background-color: #d5001c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -132,7 +165,7 @@
       Thank you for chatting with us. Your opinion matters!
     </div>
 
-    <form action="/submit-feedback" method="POST">
+    <form id="feedbackForm" action="/submit-feedback" method="POST" onsubmit="handleSubmit(event)">
       <input type="hidden" name="user_id" value="{{ user_id }}">
       <input type="hidden" name="session_id" value="{{ session_id }}">
       <input type="hidden" name="rating" id="ratingInput" value="{{ rating }}" />
@@ -141,7 +174,6 @@
         <label for="category">Category</label>
         <select id="category" name="category" required>
           <option value="">Select a category</option>
-          <!-- Options will be populated dynamically -->
         </select>
       </div>
 
@@ -156,62 +188,70 @@
     </form>
   </div>
 
+  <!-- Thank You Modal -->
+  <div id="thankYouModal">
+    <div class="modal-content">
+      <h2>Thank You!</h2>
+      <p>We appreciate your feedback.</p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
   <script>
     const positiveOptions = [
-       { value: "Helpful", label: "Helpful" },
-       { value: "Excellent Service", label: "Excellent Service" },
-       { value: "Thank You", label: "Thank You" }
-     ];
- 
-     const negativeOptions = [
-       { value: "Poor Phrasing", label: "Poor Phrasing" },
-       { value: "Off-topic", label: "Off-topic" },
-       { value: "Not Specific Enough", label: "Not Specific Enough" },
-       { value: "Incorrect Answer", label: "Incorrect Answer" },
-       { value: "Missing Knowledge", label: "Missing Knowledge" },
-       { value: "Too Technical", label: "Too Technical" }
-     ];
- 
-     function showCategories(rating) {
-       const categorySelect = document.getElementById("category");
-       categorySelect.innerHTML = '<option value="">Select a category</option>';
-       let options = [];
-       if (rating === "positive") {
-         options = positiveOptions;
-       } else if (rating === "negative") {
-         options = negativeOptions;
-       }
-       options.forEach(opt => {
-         const option = document.createElement("option");
-         option.value = opt.value;
-         option.textContent = opt.label;
-         categorySelect.appendChild(option);
-       });
-     }
-   
-     function setInitialRating() {
-       const params = new URLSearchParams(window.location.search);
-       const rating = params.get('rating');  // <-- Odczytujemy rating z URL
- 
-       if (rating === "positive" || rating === "negative") {
-         const radio = document.getElementById(rating);
-         if (radio) {
-           radio.checked = true;
-           showCategories(rating);
-         }
- 
-         const ratingInput = document.getElementById("ratingInput");
-         if (ratingInput) {
-           ratingInput.value = rating;
-         }
-         showCategories(rating);
-       }
-     }
- 
-     window.onload = setInitialRating;
-    
-     function closeForm() {
-      document.querySelector('.container').style.display = 'none';
+      { value: "Helpful", label: "Helpful" },
+      { value: "Excellent Service", label: "Excellent Service" },
+      { value: "Thank You", label: "Thank You" }
+    ];
+
+    const negativeOptions = [
+      { value: "Poor Phrasing", label: "Poor Phrasing" },
+      { value: "Off-topic", label: "Off-topic" },
+      { value: "Not Specific Enough", label: "Not Specific Enough" },
+      { value: "Incorrect Answer", label: "Incorrect Answer" },
+      { value: "Missing Knowledge", label: "Missing Knowledge" },
+      { value: "Too Technical", label: "Too Technical" }
+    ];
+
+    function showCategories(rating) {
+      const categorySelect = document.getElementById("category");
+      categorySelect.innerHTML = '<option value="">Select a category</option>';
+      let options = [];
+      if (rating === "positive") {
+        options = positiveOptions;
+      } else if (rating === "negative") {
+        options = negativeOptions;
+      }
+      options.forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        option.textContent = opt.label;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    function setInitialRating() {
+      const params = new URLSearchParams(window.location.search);
+      const rating = params.get('rating');
+      if (rating === "positive" || rating === "negative") {
+        const ratingInput = document.getElementById("ratingInput");
+        if (ratingInput) {
+          ratingInput.value = rating;
+        }
+        showCategories(rating);
+      }
+    }
+
+    window.onload = setInitialRating;
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      document.getElementById('thankYouModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('thankYouModal').style.display = 'none';
+      document.getElementById('feedbackForm').submit();
     }
   </script>
 
