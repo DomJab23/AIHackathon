@@ -14,6 +14,7 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import nltk
 from data_processing.processing import get_feedback_analysis
+import random
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -162,10 +163,22 @@ def submit_feedback():
     session['session_id'] = str(uuid.uuid4())
     current_locale, _ = locale.getdefaultlocale()
     user_country = get_user_country()
+    comments_ai = [ 
+            "Air Compressors", 
+            "Valves", 
+            "Refrigeration", 
+            "Screw Compressors", 
+            "Hydraulic Systems", 
+            "Solenoid Valves", 
+            "Centrifugal Compressors"
+        ]
 
     rating = request.form.get("rating")
     comment = request.form.get("comment")
     category = request.form.get("category") or "Unspecified"
+
+    if category == "Unspecified":
+        comment = random.choice(comments_ai)  # Randomly select a comment from the list
 
     data = {
         "user_id": request.form.get("user_id"),
