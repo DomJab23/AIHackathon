@@ -191,8 +191,8 @@
   <!-- Thank You Modal -->
   <div id="thankYouModal">
     <div class="modal-content">
-      <h2>Thank You!</h2>
-      <p>We appreciate your feedback.</p>
+      <h2 id="modalTitle">Thank You!</h2> <!-- add id="modalTitle" -->
+      <p id="modalMessage">We appreciate your feedback.</p> <!-- add id="modalMessage" -->
       <button onclick="closeModal()">Close</button>
     </div>
   </div>
@@ -244,15 +244,38 @@
 
     window.onload = setInitialRating;
 
-    function handleSubmit(event) {
-      event.preventDefault();
-      document.getElementById('thankYouModal').style.display = 'flex';
-    }
+    let formNeedsSubmission = false; // <-- add this at the top of your script
 
-    function closeModal() {
-      document.getElementById('thankYouModal').style.display = 'none';
-      document.getElementById('feedbackForm').submit();
-    }
+function handleSubmit(event) {
+  event.preventDefault(); // stop form from immediately submitting
+
+  const rating = document.getElementById('ratingInput').value;
+  const modalTitle = document.getElementById('modalTitle');
+  const modalMessage = document.getElementById('modalMessage');
+
+  if (rating === 'positive') {
+    modalTitle.textContent = 'Thank You!';
+    modalMessage.textContent = 'We\'re thrilled you had a good experience!';
+  } else if (rating === 'negative') {
+    modalTitle.textContent = 'Thank You for Your Feedback!';
+    modalMessage.textContent = 'We\'re sorry it wasn\'t perfect — your feedback helps us improve.';
+  } else {
+    modalTitle.textContent = 'Thank You!';
+    modalMessage.textContent = 'We appreciate your feedback.';
+  }
+
+  formNeedsSubmission = true; // <-- mark that we want to submit after closing
+  document.getElementById('thankYouModal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('thankYouModal').style.display = 'none';
+  if (formNeedsSubmission) {
+    document.getElementById('feedbackForm').submit();
+    formNeedsSubmission = false; // reset it
+  }
+}
+
   </script>
 
 </body>
