@@ -24,4 +24,5 @@ env/
 Thumbs.db  # Windows
 
 # Output files
+*.csv
 *.json
